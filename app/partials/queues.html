@@ -1,5 +1,3 @@
-Hello World! :)
-
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -14,7 +12,9 @@ Hello World! :)
     </thead>
     <tbody>
         <tr ng-repeat="queue in queues">
-            <td>{{ queue.name }}</td>
+            <td>
+                <a href="#/queues/{{ queue.name }}">{{ queue.name }}</a>
+            </td>
             <td>{{ queue.running }}</td>
             <td>{{ queue.waiting }}</td>
             <td>{{ queue.scheduled }}</td>
@@ -24,6 +24,8 @@ Hello World! :)
         </tr>
     </tbody>
 </table>
+
+{{config}}
 
 <ul class="queues">
     <li ng-repeat="queue in queues">

@@ -16,9 +16,9 @@ qlessuiApp.config(['$routeProvider',
         templateUrl: 'partials/queues.html',
         controller: 'QueuesListCtrl'
       }).
-      when('/phones/:phoneId', {
-        templateUrl: 'partials/queues.html',
-        controller: 'PhoneDetailCtrl'
+      when('/queues/:queueName', {
+        templateUrl: 'partials/queues_get.html',
+        controller: 'QueuesGetCtrl'
       }).
       otherwise({
         redirectTo: '/queues'
