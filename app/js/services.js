@@ -12,6 +12,21 @@ qlessuiServices.factory('Config', ['$resource',
     });
   }]);
 
+qlessuiServices.factory('Groups', ['$resource',
+  function($resource){
+    return $resource(qlessPyUi + '/groups', {}, {
+      nav: {method:'GET', isArray:true}
+    });
+  }]);
+
+qlessuiServices.factory('Group', ['$resource',
+  function($resource){
+    return $resource(qlessPyUi + '/groups/:regex_str', {}, {
+      get: {method:'GET', isArray:true}
+    });
+  }]);
+
+
 qlessuiServices.factory('Queues', ['$resource',
   function($resource){
     return $resource(qlessPyUi + '/queues', {}, {

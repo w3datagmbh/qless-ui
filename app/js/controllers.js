@@ -2,12 +2,17 @@
 
 /* Controllers */
 
-var qlessuiControllers = angular.module('qlessuiControllers', []);
+var qlessuiControllers = angular.module('qlessuiControllers', ['angularBootstrapNavTree']);
 
-qlessuiControllers.controller('QueuesListCtrl', ['$scope', 'Config', 'Queues',
-  function($scope, Config, Queues) {
-    $scope.config = Config.get();
+qlessuiControllers.controller('QueuesListCtrl', ['$scope', 'Groups', 'Group', 'Queues',
+  function($scope, Groups, Group, Queues) {
+    $scope.groups = Groups.nav();
     $scope.queues = Queues.counts();
+    $scope.groups_tree = {};
+
+    $scope.on_select_group = function(branch) {
+        $scope.queues = branch.data ? Group.get({regex_str: branch.data}) : null;
+    }
   }
 ]);
 

@@ -1,34 +1,42 @@
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th></th>
-            <th>running</th>
-            <th>waiting</th>
-            <th>scheduled</th>
-            <th>stalled</th>
-            <th>depends</th>
-            <th>recurring</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="queue in queues">
-            <td>
-                <a href="#/queues/{{ queue.name }}">{{ queue.name }}</a>
-            </td>
-            <td>{{ queue.running }}</td>
-            <td>{{ queue.waiting }}</td>
-            <td>{{ queue.scheduled }}</td>
-            <td>{{ queue.stalled }}</td>
-            <td>{{ queue.depends }}</td>
-            <td>{{ queue.recurring }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-3">
+        <abn-tree
+                tree-data="groups"
+                tree-control="groups_tree"
+                on-select="on_select_group(branch)">
+        </abn-tree>
 
-{{config}}
-
-<ul class="queues">
-    <li ng-repeat="queue in queues">
-      {{queue}}
-    </li>
-</ul>
+        <div class="btn-group" role="group">
+            <button ng-click="groups_tree.expand_all()" class="btn btn-default btn-xs">Expand All</button>
+            <button ng-click="groups_tree.collapse_all()" class="btn btn-default btn-xs">Collapse All</button>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th>running</th>
+                <th>waiting</th>
+                <th>scheduled</th>
+                <th>stalled</th>
+                <th>depends</th>
+                <th>recurring</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="queue in queues">
+                <td>
+                    <a href="#/queues/{{ queue.name }}">{{ queue.name }}</a>
+                </td>
+                <td>{{ queue.running }}</td>
+                <td>{{ queue.waiting }}</td>
+                <td>{{ queue.scheduled }}</td>
+                <td>{{ queue.stalled }}</td>
+                <td>{{ queue.depends }}</td>
+                <td>{{ queue.recurring }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -9,7 +9,7 @@
     "angular": "~1.4.0",
     "angular-route": "~1.4.0",
     "angular-resource": "~1.4.0",
-    "angular-mocks": "~1.4.0",
+    "angular-bootstrap-nav-tree": "*",
     "jquery": "~2.2.1",
     "bootstrap": "~3.3.6"
   }
