@@ -10,12 +10,21 @@
             <button ng-click="groups_tree.expand_all()" class="btn btn-default btn-xs">Expand All</button>
             <button ng-click="groups_tree.collapse_all()" class="btn btn-default btn-xs">Collapse All</button>
         </div>
+
+        <button ng-click="on_refresh()" class="btn btn-default btn-xs">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+            Refresh
+        </button>
     </div>
-    <div class="col-md-9">
-        <table class="table table-striped table-hover">
+    <div class="col-md-9" ng-switch on="queues">
+        <div ng-switch-when="null">
+            Nothing to see here, move along.
+        </div>
+
+        <table ng-switch-default class="table table-striped table-hover">
             <thead>
             <tr>
-                <th></th>
+                <th>queue</th>
                 <th>running</th>
                 <th>waiting</th>
                 <th>scheduled</th>
@@ -25,9 +34,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="queue in queues">
+            <tr ng-repeat="queue in queues" class="{{queue.paused ? 'warning' : ''}}">
                 <td>
                     <a href="#/queues/{{ queue.name }}">{{ queue.name }}</a>
+
+                    <span ng-switch on="queue.paused">
+                        <button ng-switch-when="true" ng-click="on_queue_play(queue.name)" class="btn btn-default btn-xs">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                        </button>
+                        <button ng-switch-default ng-click="on_queue_pause(queue.name)" class="btn btn-default btn-xs">
+                            <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+                        </button>
+                    </span>
                 </td>
                 <td>{{ queue.running }}</td>
                 <td>{{ queue.waiting }}</td>
