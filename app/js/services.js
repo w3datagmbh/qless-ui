@@ -22,8 +22,11 @@ qlessuiServices.factory('Groups', ['$resource',
 
 qlessuiServices.factory('Queues', ['$resource',
   function($resource){
-    return $resource(qlessPyUi + '/queues/:queueName', { queueName: null }, {
+    return $resource(qlessPyUi + '/queues/:queueName/:action', { queueName: null, action: null }, {
         query: { method:'GET', isArray:true },
-        get: { method:'GET', params: { queueName: '' } }
+        get: { method:'GET', params: { queueName: null } },
+        stats: { method:'GET', params: { queueName: null, action: 'stats' } },
+        pause: { method:'GET', params: { queueName: null, action: 'pause' } },
+        unpause: { method:'GET', params: { queueName: null, action: 'unpause' } }
     });
   }]);

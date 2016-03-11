@@ -19,13 +19,11 @@ qlessuiControllers.controller('QueuesListCtrl', ['$scope', 'Groups', 'Queues',
         $scope.queues = regexStr ? Groups.get({regexStr: regexStr}) : null;
     }
     $scope.on_queue_play = function(queueName) {
-        console.log(queueName);
-        // TODO API CALL
+        Queues.unpause({queueName: queueName});
         $scope.on_refresh();
     }
     $scope.on_queue_pause = function(queueName) {
-        console.log(queueName);
-        // TODO API CALL
+        Queues.pause({queueName: queueName});
         $scope.on_refresh();
     }
   }
