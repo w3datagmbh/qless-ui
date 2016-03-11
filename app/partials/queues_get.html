@@ -1,1 +1,40 @@
+<h1>
+    {{ queue.name }}
+
+    <small style="color: black;">
+        <small>running:</small>
+        {{ queue.running }}
+
+        <small>waiting:</small>
+        {{ queue.waiting }}
+
+        <small>scheduled:</small>
+        {{ queue.scheduled }}
+
+        <small>stalled:</small>
+        {{ queue.stalled }}
+
+        <small>depends:</small>
+        {{ queue.depends }}
+
+        <small>recurring:</small>
+        {{ queue.recurring }}
+    </small>
+
+    <small style="color: black; padding-top: 12px;" class="pull-right">
+        <small>failed:</small>
+        {{ stats.failed }}
+
+        <small>failures:</small>
+        {{ stats.failures }}
+
+        <small>retries:</small>
+        {{ stats.retries }}
+    </small>
+</h1>
+
+<pre>
 {{queue}}
+
+{{stats}}
+</pre>

@@ -4,6 +4,15 @@
 
 var qlessuiControllers = angular.module('qlessuiControllers', ['angularBootstrapNavTree']);
 
+qlessuiControllers.controller('NavBarCtrl', ['$scope', '$location',
+  function($scope, $location) {
+        $scope.isActive = function (viewLocation) {
+            return viewLocation === $location.path();
+            //return $location.path().indexOf(viewLocation) == 0;
+        };
+  }
+]);
+
 qlessuiControllers.controller('QueuesListCtrl', ['$scope', 'Groups', 'Queues',
   function($scope, Groups, Queues) {
     $scope.groups = Groups.nav();
@@ -32,5 +41,6 @@ qlessuiControllers.controller('QueuesListCtrl', ['$scope', 'Groups', 'Queues',
 qlessuiControllers.controller('QueuesGetCtrl', ['$scope', '$routeParams', 'Queues',
   function($scope, $routeParams, Queues) {
         $scope.queue = Queues.get({queueName: $routeParams.queueName});
+        $scope.stats = Queues.stats({queueName: $routeParams.queueName});
   }
 ]);

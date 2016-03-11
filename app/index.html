@@ -29,10 +29,10 @@
           </button>
           <a class="navbar-brand" href="#">Qless UI</a>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
+        <div id="navbar" class="collapse navbar-collapse" ng-controller="NavBarCtrl">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#/">Dashboard</a></li>
-            <li><a href="#/queues">Queues</a></li>
+            <li ng-class="{ active: isActive('/')}"><a href="#/">Dashboard</a></li>
+            <li ng-class="{ active: isActive('/queues')}"><a href="#/queues">Queues</a></li>
           </ul>
         </div>
       </div>
