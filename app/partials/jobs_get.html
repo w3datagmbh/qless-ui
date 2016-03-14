@@ -1,0 +1,55 @@
+<h1>
+    {{ job.klass_name }}
+    <small>
+        {{ job.jid }}
+    </small>
+
+    <small class="pull-right-h1 black">
+        <small>state: </small>
+        {{ job.state }}
+
+        <small>queue:</small>
+        <a href="#/queues/{{ job.queue_name }}">{{ job.queue_name }}</a>
+    </small>
+</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        Data:
+        <pre>{{ job.data }}</pre>
+    </div>
+
+    <div class="col-md-6">
+        History:
+
+        <div class="well well-sm">
+            <p ng-repeat="entry in job.history">
+                <strong>{{ entry.what }}</strong>
+
+                at <em>{{moment.unix(entry.when).format()}}</em>
+                ({{moment.unix(entry.when).fromNow()}})
+
+                <span ng-if="entry.worker">
+                    by <strong>{{entry.worker}}</strong>
+                </span>
+
+                <span ng-if="entry.q">
+                    in <strong>{{entry.q}}</strong>
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-danger" role="alert">
+    In <strong>{{job.queue_name}}</strong>
+    on <strong>{{job.failure.worker}}</strong>
+    <em>{{moment.unix(job.failure.when).format()}}</em>
+    ({{moment.unix(job.failure.when).fromNow()}})
+
+    <pre>{{ job.failure.message }}</pre>
+</div>
+
+<pre>
+{{job}}
+</pre>

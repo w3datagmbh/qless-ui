@@ -44,3 +44,25 @@ qlessuiControllers.controller('QueuesGetCtrl', ['$scope', '$routeParams', 'Queue
         $scope.stats = Queues.stats({queueName: $routeParams.queueName});
   }
 ]);
+
+
+qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$routeParams', 'Jobs',
+  function($scope, $routeParams, Jobs) {
+        $scope.job = Jobs.get({jid: $routeParams.jid});
+        $scope.moment = moment;
+  }
+]);
+
+qlessuiControllers.controller('JobsFailedCtrl', ['$scope', 'Jobs',
+  function($scope, Jobs) {
+        $scope.failed = Jobs.failed({group: null});
+  }
+]);
+
+qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$routeParams', 'Jobs',
+  function($scope, $routeParams, Jobs) {
+        $scope.failed = Jobs.failed({group: $routeParams.group});
+        $scope.group = $routeParams.group;
+        $scope.moment = moment;
+  }
+]);

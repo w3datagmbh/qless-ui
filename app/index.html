@@ -13,6 +13,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-bootstrap-nav-tree/dist/abn_tree_directive.js"></script>
+    <script src="bower_components/moment/min/moment.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
@@ -33,6 +34,7 @@
           <ul class="nav navbar-nav">
             <li ng-class="{ active: isActive('/')}"><a href="#/">Dashboard</a></li>
             <li ng-class="{ active: isActive('/queues')}"><a href="#/queues">Queues</a></li>
+            <li ng-class="{ active: isActive('/jobs/failed')}"><a href="#/jobs/failed">Failed</a></li>
           </ul>
         </div>
       </div>

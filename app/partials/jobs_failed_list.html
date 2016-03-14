@@ -1,0 +1,46 @@
+<h1>
+    {{ group }}
+
+    <small class="pull-right-h1 black">
+        {{ failed.total }}
+        <small>Jobs</small>
+    </small>
+</h1>
+
+<div ng-switch on="jobs">
+    <div ng-switch-when="{}">
+        Nothing to see here, move along.
+    </div>
+
+    <table ng-switch-default class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>jid</th>
+            <th>error</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="job in failed.jobs">
+            <td>
+                <strong>{{job.klass_name}}</strong> <br>
+                <a href="#/jobs/{{ job.jid }}">{{ job.jid }}</a>
+
+            </td>
+            <td>
+                <div class="alert alert-danger" role="alert">
+                    In <strong>{{job.queue_name}}</strong>
+                    on <strong>{{job.failure.worker}}</strong>
+                    <em>{{moment.unix(job.failure.when).format()}}</em>
+                    ({{moment.unix(job.failure.when).fromNow()}})
+
+                    <pre>{{ job.failure.message }}</pre>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<pre>
+{{failed}}
+</pre>

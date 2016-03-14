@@ -30,3 +30,12 @@ qlessuiServices.factory('Queues', ['$resource',
         unpause: { method:'GET', params: { queueName: null, action: 'unpause' } }
     });
   }]);
+
+qlessuiServices.factory('Jobs', ['$resource',
+  function($resource){
+    return $resource(qlessPyUi + '/jobs/:jid/:type/:group', { jid: null, type: null, group: null }, {
+        failed: { method:'GET', params: { type: 'failed' } },
+        completed: { method:'GET', params: { type: 'completed' } },
+        get: { method:'GET' }
+    });
+  }]);
