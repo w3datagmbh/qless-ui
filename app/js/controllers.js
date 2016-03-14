@@ -46,8 +46,8 @@ qlessuiControllers.controller('QueuesGetCtrl', ['$scope', '$routeParams', 'Queue
 ]);
 
 
-qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$routeParams', 'Jobs',
-  function($scope, $routeParams, Jobs) {
+qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
+  function($scope, $location, $routeParams, Jobs) {
         $scope.job = Jobs.get({jid: $routeParams.jid});
         $scope.moment = moment;
 
@@ -56,30 +56,87 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$routeParams', 'Jobs',
         };
         $scope.on_cancel= function() {
             Jobs.cancel({jid: $routeParams.jid});
+            $location.path('/');
         };
   }
 ]);
 
 qlessuiControllers.controller('JobsFailedCtrl', ['$scope', 'Jobs',
   function($scope, Jobs) {
-        $scope.failed = Jobs.failed({group: null});
+        $scope.on_refresh = function() {
+            $scope.failed = Jobs.failed({group: null});
+        };
+
+        $scope.on_retry_all = function(group) {
+            Jobs.retry_all({group: group});
+            $scope.on_refresh();
+        };
+        $scope.on_cancel_all = function(group) {
+            if (confirm("Cancel all jobs in '" + group + "'?")) {
+                Jobs.cancel_all({group: group});
+                $scope.on_refresh();
+            }
+        };
+
+        $scope.on_refresh();
   }
 ]);
 
 qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
   function($scope, $location, $routeParams, Jobs) {
-        $scope.failed = Jobs.failed({group: $routeParams.group});
+        var step = 5, total = 0;
+        $scope.failed = null;
+        $scope.start = 0;
+        $scope.limit = step;
         $scope.group = $routeParams.group;
         $scope.moment = moment;
+
+        function load() {
+            console.log($scope);
+            $scope.failed = Jobs.failed({group: $routeParams.group, start: $scope.start, limit: $scope.limit});
+            $scope.failed.$promise.then(function(data){
+                total = data.total;
+
+                $scope.pages = [];
+                for(var i = 0; i < total; i += step) {
+                    $scope.pages.push(i);
+                }
+            });
+        }
+        load();
+
+        $scope.on_previous = function() {
+            if($scope.start == 0)
+                return;
+
+            $scope.start = Math.max(0, $scope.start - step);
+            $scope.limit = Math.max(step, $scope.start + step);
+            load();
+        }
+        $scope.on_next = function() {
+            if($scope.limit >= total)
+                return;
+
+            $scope.start = Math.max(0, Math.min(total - 1, $scope.start + step));
+            $scope.limit = Math.max(0, Math.min(total, $scope.start + step));
+            load();
+        }
+        $scope.on_select_page = function(page) {
+            console.log(page);
+            $scope.start = page;
+            $scope.limit = Math.max(0, Math.min(total, $scope.start + step));
+            load();
+        }
 
         $scope.on_retry_all = function() {
             Jobs.retry_all({group: $routeParams.group});
             $location.path('/jobs/failed');
         };
-        $scope.on_cancel= function() {
-            // TODO: sure?
-            Jobs.cancel_all({group: $routeParams.group});
-            $location.path('/jobs/failed');
+        $scope.on_cancel_all = function() {
+            if (confirm("Cancel all jobs in '" + $routeParams.group + "'?")) {
+                Jobs.cancel_all({group: $routeParams.group});
+                $location.path('/jobs/failed');
+            }
         };
   }
 ]);
