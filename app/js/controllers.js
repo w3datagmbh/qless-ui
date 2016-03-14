@@ -54,7 +54,7 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
         $scope.on_retry = function() {
             Jobs.retry({jid: $routeParams.jid});
         };
-        $scope.on_cancel= function() {
+        $scope.on_cancel = function() {
             Jobs.cancel({jid: $routeParams.jid});
             $location.path('/');
         };
@@ -84,7 +84,7 @@ qlessuiControllers.controller('JobsFailedCtrl', ['$scope', 'Jobs',
 
 qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
   function($scope, $location, $routeParams, Jobs) {
-        var step = 5, total = 0;
+        var step = 25, total = 0;
         $scope.failed = null;
         $scope.start = 0;
         $scope.limit = step;
@@ -92,10 +92,10 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
         $scope.moment = moment;
 
         function load() {
-            console.log($scope);
             $scope.failed = Jobs.failed({group: $routeParams.group, start: $scope.start, limit: $scope.limit});
             $scope.failed.$promise.then(function(data){
                 total = data.total;
+                $scope.limit = Math.min(total, $scope.limit);
 
                 $scope.pages = [];
                 for(var i = 0; i < total; i += step) {
@@ -127,6 +127,15 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
             $scope.limit = Math.max(0, Math.min(total, $scope.start + step));
             load();
         }
+
+        $scope.on_retry = function(jid) {
+            Jobs.retry({jid: jid});
+            load();
+        };
+        $scope.on_cancel = function(jid) {
+            Jobs.cancel({jid: jid});
+            load();
+        };
 
         $scope.on_retry_all = function() {
             Jobs.retry_all({group: $routeParams.group});

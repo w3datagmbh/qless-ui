@@ -53,6 +53,7 @@
         <tr>
             <th>jid</th>
             <th>error</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -70,6 +71,17 @@
                     ({{moment.unix(job.failure.when).fromNow()}})
 
                     <pre>{{ job.failure.message }}</pre>
+                </div>
+            </td>
+            <td>
+                <div class="btn-group pull-right" role="group">
+                    <button ng-click="on_retry(job.jid)" type="button" class="btn btn-xs btn-success">
+                        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                    </button>
+
+                    <button ng-click="on_cancel(job.jid)" type="button" class="btn btn-xs btn-danger">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
                 </div>
             </td>
         </tr>
