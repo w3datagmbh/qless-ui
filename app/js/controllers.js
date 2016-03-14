@@ -50,6 +50,13 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$routeParams', 'Jobs',
   function($scope, $routeParams, Jobs) {
         $scope.job = Jobs.get({jid: $routeParams.jid});
         $scope.moment = moment;
+
+        $scope.on_retry = function() {
+            Jobs.retry({jid: $routeParams.jid});
+        };
+        $scope.on_cancel= function() {
+            Jobs.cancel({jid: $routeParams.jid});
+        };
   }
 ]);
 
@@ -59,10 +66,20 @@ qlessuiControllers.controller('JobsFailedCtrl', ['$scope', 'Jobs',
   }
 ]);
 
-qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$routeParams', 'Jobs',
-  function($scope, $routeParams, Jobs) {
+qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
+  function($scope, $location, $routeParams, Jobs) {
         $scope.failed = Jobs.failed({group: $routeParams.group});
         $scope.group = $routeParams.group;
         $scope.moment = moment;
+
+        $scope.on_retry_all = function() {
+            Jobs.retry_all({group: $routeParams.group});
+            $location.path('/jobs/failed');
+        };
+        $scope.on_cancel= function() {
+            // TODO: sure?
+            Jobs.cancel_all({group: $routeParams.group});
+            $location.path('/jobs/failed');
+        };
   }
 ]);

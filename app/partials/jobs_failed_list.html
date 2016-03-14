@@ -7,8 +7,22 @@
     </small>
 </h1>
 
-<div ng-switch on="jobs">
-    <div ng-switch-when="{}">
+<div class="row">
+    <div class="btn-group pull-right" role="group">
+        <button ng-click="on_retry_all()" type="button" class="btn btn-sm btn-success">
+            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            Retry All
+        </button>
+
+        <button ng-click="on_cancel_all()" type="button" class="btn btn-sm btn-danger">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            Cancel All
+        </button>
+    </div>
+</div>
+
+<div ng-switch on="failed.jobs.length">
+    <div ng-switch-when="0">
         Nothing to see here, move along.
     </div>
 

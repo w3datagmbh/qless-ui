@@ -14,6 +14,20 @@
 </h1>
 
 <div class="row">
+    <div class="btn-group pull-right" role="group">
+        <button ng-click="on_retry()" type="button" class="btn btn-sm btn-success">
+            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            Retry
+        </button>
+
+        <button ng-click="on_cancel()" type="button" class="btn btn-sm btn-danger">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            Cancel
+        </button>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-6">
         Data:
         <pre>{{ job.data }}</pre>

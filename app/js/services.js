@@ -33,9 +33,13 @@ qlessuiServices.factory('Queues', ['$resource',
 
 qlessuiServices.factory('Jobs', ['$resource',
   function($resource){
-    return $resource(qlessPyUi + '/jobs/:jid/:type/:group', { jid: null, type: null, group: null }, {
+    return $resource(qlessPyUi + '/jobs/:jid/:type/:group/:action', { jid: null, type: null, group: null }, {
         failed: { method:'GET', params: { type: 'failed' } },
         completed: { method:'GET', params: { type: 'completed' } },
+        retry: { method:'GET', params: { action: 'retry' } },
+        retry_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'retry' } },
+        cancel: { method:'GET', params: { action: 'cancel' } },
+        cancel_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'cancel' } },
         get: { method:'GET' }
     });
   }]);
