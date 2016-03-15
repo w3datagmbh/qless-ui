@@ -72,14 +72,7 @@
     </div>
 </div>
 
-<div class="alert alert-danger" role="alert">
-    In <strong>{{job.queue_name}}</strong>
-    on <strong>{{job.failure.worker}}</strong>
-    <em>{{moment.unix(job.failure.when).format()}}</em>
-    ({{moment.unix(job.failure.when).fromNow()}})
-
-    <pre>{{ job.failure.message }}</pre>
-</div>
+<div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'"></div>
 
 <pre>
 {{job}}

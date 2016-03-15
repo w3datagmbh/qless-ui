@@ -1,0 +1,6 @@
+In <strong>{{job.queue_name}}</strong>
+on <strong>{{job.failure.worker}}</strong>
+<em>{{moment.unix(job.failure.when).format()}}</em>
+({{moment.unix(job.failure.when).fromNow()}})
+
+<pre>{{ job.failure.message }}</pre>

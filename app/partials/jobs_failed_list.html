@@ -20,27 +20,7 @@
         </button>
     </div>
 
-    <nav>
-        <ul class="pagination">
-            <li class="{{start == 0 ? 'disabled' : ''}}">
-                <a ng-click="on_previous()" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-
-            <li ng-repeat="page in pages" class="{{start == page ? 'active' : ''}}">
-                <a ng-click="on_select_page(page)">
-                    {{ $index+1 }}
-                </a>
-            </li>
-
-            <li class="{{limit >= failed.total ? 'disabled' : ''}}">
-                <a ng-click="on_next()" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <nav ng-include="'partials/_pagination.html'"></nav>
 </div>
 
 <div ng-switch on="failed.jobs.length">
@@ -62,16 +42,14 @@
                 <strong>{{job.klass_name}}</strong> <br>
                 <a href="#/jobs/{{ job.jid }}">{{ job.jid }}</a>
 
+                <div class="tag-list">
+                    <span data-ng-repeat="tag in job.tags" class="badge">
+                        {{ tag }}
+                    </span>
+                </div>
             </td>
             <td>
-                <div class="alert alert-danger" role="alert">
-                    In <strong>{{job.queue_name}}</strong>
-                    on <strong>{{job.failure.worker}}</strong>
-                    <em>{{moment.unix(job.failure.when).format()}}</em>
-                    ({{moment.unix(job.failure.when).fromNow()}})
-
-                    <pre>{{ job.failure.message }}</pre>
-                </div>
+                <div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'"></div>
             </td>
             <td>
                 <div class="btn-group pull-right" role="group">
@@ -93,30 +71,7 @@
     </table>
 </div>
 
-<nav>
-    <ul class="pagination">
-        <li class="{{start == 0 ? 'disabled' : ''}}">
-            <a ng-click="on_previous()" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-
-        <li ng-repeat="page in pages" class="{{start == page ? 'active' : ''}}">
-            <a ng-click="on_select_page(page)">
-                {{ $index+1 }}
-            </a>
-        </li>
-
-        <li class="{{limit >= failed.total ? 'disabled' : ''}}">
-            <a ng-click="on_next()" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-    <p>
-        Showing failed job <strong>{{start+1}}</strong> to <strong>{{limit}}</strong> of total <strong>{{failed.total}}</strong>.
-    </p>
-</nav>
+<nav ng-include="'partials/_pagination.html'"></nav>
 
 <pre>
 {{failed}}
