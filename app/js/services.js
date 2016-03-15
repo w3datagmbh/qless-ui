@@ -42,13 +42,17 @@ qlessuiServices.factory('Queues', ['$resource', 'ErrorHandler',
 
 qlessuiServices.factory('Jobs', ['$resource', 'ErrorHandler',
   function($resource, ErrorHandler){
-    return $resource(qlessPyUi + '/jobs/:jid/:type/:group/:start/:limit/:action', { jid: null, type: null, group: null, start: null, limit: null, action: null }, {
+    return $resource(qlessPyUi + '/jobs/:type/:group/:start/:limit/:jid/:action', { jid: null, type: null, group: null, start: null, limit: null, action: null }, {
         failed: { method:'GET', params: { type: 'failed' }, interceptor : {responseError : ErrorHandler.error} },
         completed: { method:'GET', params: { type: 'completed' }, interceptor : {responseError : ErrorHandler.error} },
         retry: { method:'GET', params: { action: 'retry' }, interceptor : {responseError : ErrorHandler.error} },
         retry_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'retry' }, interceptor : {responseError : ErrorHandler.error} },
         cancel: { method:'GET', isArray:true, params: { action: 'cancel' }, interceptor : {responseError : ErrorHandler.error} },
         cancel_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'cancel' }, interceptor : {responseError : ErrorHandler.error} },
-        get: { method:'GET', interceptor : {responseError : ErrorHandler.error} }
+        get: { method:'GET', interceptor : {responseError : ErrorHandler.error} },
+        tag: { method:'POST', isArray:true, params: { action: 'tag' }, interceptor : {responseError : ErrorHandler.error} },
+        untag: { method:'POST', isArray:true, params: { action: 'untag' }, interceptor : {responseError : ErrorHandler.error} },
+        track: { method:'GET', params: { action: 'track' }, interceptor : {responseError : ErrorHandler.error} },
+        untrack: { method:'GET', params: { action: 'untrack' }, interceptor : {responseError : ErrorHandler.error} }
     });
   }]);

@@ -74,8 +74,14 @@ qlessuiControllers.controller('QueuesGetCtrl', ['$scope', '$routeParams', 'Queue
 
 qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
   function($scope, $location, $routeParams, Jobs) {
-        $scope.job = Jobs.get({jid: $routeParams.jid});
+        $scope.tags = [];
+        $scope.tracked = false;
         $scope.moment = moment;
+
+        $scope.job = Jobs.get({jid: $routeParams.jid}, function(data){
+            $scope.tags = data.tags;
+            $scope.tracked = data.tracked;
+        });
 
         $scope.on_retry = function() {
             Jobs.retry({jid: $routeParams.jid});
@@ -84,6 +90,36 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             Jobs.cancel({jid: $routeParams.jid});
             $location.path('/');
         };
+
+        function update_tags(data) {
+            $scope.tags = data;
+        }
+        $scope.on_add_tag = function() {
+            var tag = prompt('Enter new tag:');
+            if(tag && $scope.tags.indexOf(tag) == -1) {
+                $scope.tags.push(tag);
+                Jobs.tag({jid: $routeParams.jid}, tag, update_tags);
+            }
+        }
+        $scope.on_remove_tag = function(tag) {
+            var tagIndex = $scope.tags.indexOf(tag);
+            if(tagIndex >= 0){
+                $scope.job.tags.splice(tagIndex, 1);
+                Jobs.untag({jid: $routeParams.jid}, tag, update_tags);
+            }
+        }
+
+        function toggle_track(){
+            $scope.tracked = !$scope.tracked;
+        }
+        $scope.on_toggle_track = function() {
+            if($scope.tracked) {
+                Jobs.untrack({jid: $routeParams.jid}, toggle_track);
+            }
+            else {
+                Jobs.track({jid: $routeParams.jid}, toggle_track);
+            }
+        }
   }
 ]);
 
@@ -154,6 +190,16 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
             load();
         }
 
+        $scope.on_toggle_track = function(job) {
+            if(job.tracked) {
+                Jobs.untrack({jid: job.jid});
+            }
+            else {
+                Jobs.track({jid: job.jid});
+            }
+
+            job.tracked = !job.tracked;
+        };
         $scope.on_retry = function(jid) {
             Jobs.retry({jid: jid});
             load();

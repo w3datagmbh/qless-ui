@@ -10,3 +10,14 @@ body {
     float: right !important;
     padding-top: 12px;
 }
+
+.tag-list .badge {
+    margin-left: 5px;
+}
+.tag-list .badge span:hover {
+    cursor: pointer;
+    color: black;
+}
+.tag-list button {
+    margin-left: 5px;
+}

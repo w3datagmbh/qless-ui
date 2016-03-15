@@ -75,6 +75,10 @@
             </td>
             <td>
                 <div class="btn-group pull-right" role="group">
+                    <button ng-click="on_toggle_track(job)" type="button" class="btn btn-xs {{job.tracked ? 'btn-info' : 'btn-default'}}">
+                        <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                    </button>
+
                     <button ng-click="on_retry(job.jid)" type="button" class="btn btn-xs btn-success">
                         <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
                     </button>
