@@ -41,7 +41,14 @@
     </nav>
 
     <div class="container">
-      <div ng-view class="view-frame"></div>
+        <div ng-controller="AlertCtrl">
+            <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts">
+                <button ng-click="closeAlert($index)" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{alert.msg}}
+            </div>
+        </div>
+
+        <div ng-view class="view-frame"></div>
     </div>
 
 </body>

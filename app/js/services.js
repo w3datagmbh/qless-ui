@@ -5,41 +5,50 @@
 var qlessuiServices = angular.module('qlessuiServices', ['ngResource']);
 var qlessPyUi = '/api';
 
-qlessuiServices.factory('Config', ['$resource',
-  function($resource){
+qlessuiServices.factory("ErrorHandler", function($rootScope){
+    return {
+        error: function(error) {
+            console.error(error);
+            $rootScope.$emit('api_error', error);
+        }
+    };
+});
+
+qlessuiServices.factory('Config', ['$resource', 'ErrorHandler',
+  function($resource, ErrorHandler){
     return $resource(qlessPyUi + '/config', {}, {
-      get: { method:'GET' }
+      get: { method:'GET', interceptor : {responseError : ErrorHandler.error} }
     });
   }]);
 
-qlessuiServices.factory('Groups', ['$resource',
-  function($resource){
+qlessuiServices.factory('Groups', ['$resource', 'ErrorHandler',
+  function($resource, ErrorHandler){
     return $resource(qlessPyUi + '/groups/:regexStr', { regexStr: null }, {
-        nav: { method:'GET', isArray:true },
-        get: { method:'GET', isArray:true, params: { regexStr: '.*' } }
+        nav: { method:'GET', isArray:true, interceptor : {responseError : ErrorHandler.error} },
+        get: { method:'GET', isArray:true, params: { regexStr: '.*' }, interceptor : {responseError : ErrorHandler.error} }
     });
   }]);
 
-qlessuiServices.factory('Queues', ['$resource',
-  function($resource){
+qlessuiServices.factory('Queues', ['$resource', 'ErrorHandler',
+  function($resource, ErrorHandler){
     return $resource(qlessPyUi + '/queues/:queueName/:action', { queueName: null, action: null }, {
-        query: { method:'GET', isArray:true },
-        get: { method:'GET', params: { queueName: null } },
-        stats: { method:'GET', params: { queueName: null, action: 'stats' } },
-        pause: { method:'GET', params: { queueName: null, action: 'pause' } },
-        unpause: { method:'GET', params: { queueName: null, action: 'unpause' } }
+        query: { method:'GET', isArray:true, interceptor : {responseError : ErrorHandler.error} },
+        get: { method:'GET', params: { queueName: null }, interceptor : {responseError : ErrorHandler.error} },
+        stats: { method:'GET', params: { queueName: null, action: 'stats' }, interceptor : {responseError : ErrorHandler.error} },
+        pause: { method:'GET', params: { queueName: null, action: 'pause' }, interceptor : {responseError : ErrorHandler.error} },
+        unpause: { method:'GET', params: { queueName: null, action: 'unpause' }, interceptor : {responseError : ErrorHandler.error} }
     });
   }]);
 
-qlessuiServices.factory('Jobs', ['$resource',
-  function($resource){
+qlessuiServices.factory('Jobs', ['$resource', 'ErrorHandler',
+  function($resource, ErrorHandler){
     return $resource(qlessPyUi + '/jobs/:jid/:type/:group/:start/:limit/:action', { jid: null, type: null, group: null, start: null, limit: null, action: null }, {
-        failed: { method:'GET', params: { type: 'failed' } },
-        completed: { method:'GET', params: { type: 'completed' } },
-        retry: { method:'GET', params: { action: 'retry' } },
-        retry_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'retry' } },
-        cancel: { method:'GET', isArray:true, params: { action: 'cancel' } },
-        cancel_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'cancel' } },
-        get: { method:'GET' }
+        failed: { method:'GET', params: { type: 'failed' }, interceptor : {responseError : ErrorHandler.error} },
+        completed: { method:'GET', params: { type: 'completed' }, interceptor : {responseError : ErrorHandler.error} },
+        retry: { method:'GET', params: { action: 'retry' }, interceptor : {responseError : ErrorHandler.error} },
+        retry_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'retry' }, interceptor : {responseError : ErrorHandler.error} },
+        cancel: { method:'GET', isArray:true, params: { action: 'cancel' }, interceptor : {responseError : ErrorHandler.error} },
+        cancel_all: { method:'GET', isArray:true, params: { type: 'failed', action: 'cancel' }, interceptor : {responseError : ErrorHandler.error} },
+        get: { method:'GET', interceptor : {responseError : ErrorHandler.error} }
     });
   }]);

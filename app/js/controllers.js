@@ -13,6 +13,32 @@ qlessuiControllers.controller('NavBarCtrl', ['$scope', '$location',
   }
 ]);
 
+qlessuiControllers.controller('AlertCtrl', ['$scope', '$rootScope',
+    function($scope, $rootScope) {
+        $scope.alerts = [];
+
+        $rootScope.$on('success' , function(event, args) {
+            $scope.alerts.push({type: 'success', msg: args});
+        });
+        $rootScope.$on('info' , function(event, args) {
+            $scope.alerts.push({type: 'info', msg: args});
+        });
+        $rootScope.$on('warning' , function(event, args) {
+            $scope.alerts.push({type: 'warning', msg: args});
+        });
+        $rootScope.$on('error' , function(event, args) {
+            $scope.alerts.push({type: 'danger', msg: args});
+        });
+        $rootScope.$on('api_error' , function(event, args) {
+            $scope.alerts.push({type: 'danger', msg: 'API request failed: ' + args.status + ' ' + args.statusText});
+        });
+
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
+    }
+]);
+
 qlessuiControllers.controller('QueuesListCtrl', ['$scope', 'Groups', 'Queues',
   function($scope, Groups, Queues) {
     $scope.groups = Groups.nav();
@@ -92,16 +118,16 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
         $scope.moment = moment;
 
         function load() {
-            $scope.failed = Jobs.failed({group: $routeParams.group, start: $scope.start, limit: $scope.limit});
-            $scope.failed.$promise.then(function(data){
-                total = data.total;
-                $scope.limit = Math.min(total, $scope.limit);
+            $scope.failed = Jobs.failed({group: $routeParams.group, start: $scope.start, limit: $scope.limit},
+                function(data){
+                    total = data.total;
+                    $scope.limit = Math.min(total, $scope.limit);
 
-                $scope.pages = [];
-                for(var i = 0; i < total; i += step) {
-                    $scope.pages.push(i);
-                }
-            });
+                    $scope.pages = [];
+                    for(var i = 0; i < total; i += step) {
+                        $scope.pages.push(i);
+                    }
+                });
         }
         load();
 
