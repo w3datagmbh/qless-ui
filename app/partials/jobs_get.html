@@ -96,6 +96,8 @@
     </div>
 </div>
 
-<div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'"></div>
+<div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'" ng-show="job.failure.when"></div>
+
+<hr/>
 
 <pre>{{ JSON.stringify(job, null, 2) }}</pre>

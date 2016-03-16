@@ -188,21 +188,22 @@ qlessuiControllers.controller('JobsFailedCtrl', ['$scope', 'Jobs',
 
 qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
   function($scope, $location, $routeParams, Jobs) {
-        var step = 25, total = 0;
+        var step = 25;
         $scope.failed = null;
         $scope.start = 0;
         $scope.limit = step;
+        $scope.total = 0;
         $scope.group = $routeParams.group;
         $scope.moment = moment;
 
         function load() {
             $scope.failed = Jobs.failed({group: $routeParams.group, start: $scope.start, limit: $scope.limit},
                 function(data){
-                    total = data.total;
-                    $scope.limit = Math.min(total, $scope.limit);
+                    $scope.total = data.total;
+                    $scope.limit = Math.min(data.total, $scope.limit);
 
                     $scope.pages = [];
-                    for(var i = 0; i < total; i += step) {
+                    for(var i = 0; i < data.total; i += step) {
                         $scope.pages.push(i);
                     }
                 });
@@ -218,17 +219,17 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
             load();
         }
         $scope.on_next = function() {
-            if($scope.limit >= total)
+            if($scope.limit >= $scope.total)
                 return;
 
-            $scope.start = Math.max(0, Math.min(total - 1, $scope.start + step));
-            $scope.limit = Math.max(0, Math.min(total, $scope.start + step));
+            $scope.start = Math.max(0, Math.min($scope.total - 1, $scope.start + step));
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
         }
         $scope.on_select_page = function(page) {
             console.log(page);
             $scope.start = page;
-            $scope.limit = Math.max(0, Math.min(total, $scope.start + step));
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
         }
 
@@ -260,6 +261,73 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
                 Jobs.cancel_all({group: $routeParams.group});
                 $location.path('/jobs/failed');
             }
+        };
+  }
+]);
+
+qlessuiControllers.controller('JobsCompletedListCtrl', ['$scope', '$routeParams', 'Jobs',
+  function($scope, $routeParams, Jobs) {
+        var step = 25;
+        $scope.completed = null;
+        $scope.start = 0;
+        $scope.limit = step;
+        $scope.total = 0;
+        $scope.moment = moment;
+
+        function load() {
+            $scope.completed = Jobs.completed({start: $scope.start, limit: $scope.limit},
+                function(data){
+                    $scope.total = data.total;
+                    $scope.limit = Math.min(data.total, $scope.limit);
+
+                    $scope.pages = [];
+                    for(var i = 0; i < data.total; i += step) {
+                        $scope.pages.push(i);
+                    }
+                });
+        }
+        load();
+
+        $scope.on_previous = function() {
+            if($scope.start == 0)
+                return;
+
+            $scope.start = Math.max(0, $scope.start - step);
+            $scope.limit = Math.max(step, $scope.start + step);
+            load();
+        }
+        $scope.on_next = function() {
+            if($scope.limit >= $scope.total)
+                return;
+
+            $scope.start = Math.max(0, Math.min($scope.total - 1, $scope.start + step));
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            load();
+        }
+        $scope.on_select_page = function(page) {
+            console.log(page);
+            $scope.start = page;
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            load();
+        }
+
+        $scope.on_toggle_track = function(job) {
+            if(job.tracked) {
+                Jobs.untrack({jid: job.jid});
+            }
+            else {
+                Jobs.track({jid: job.jid});
+            }
+
+            job.tracked = !job.tracked;
+        };
+        $scope.on_retry = function(jid) {
+            Jobs.retry({jid: jid});
+            load();
+        };
+        $scope.on_cancel = function(jid) {
+            Jobs.cancel({jid: jid});
+            load();
         };
   }
 ]);

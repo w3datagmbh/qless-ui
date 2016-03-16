@@ -11,12 +11,12 @@
         </a>
     </li>
 
-    <li class="{{limit >= failed.total ? 'disabled' : ''}}">
+    <li class="{{limit >= total ? 'disabled' : ''}}">
         <a ng-click="on_next()" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
         </a>
     </li>
 </ul>
 <p>
-    Showing failed job <strong>{{start+1}}</strong> to <strong>{{limit}}</strong> of total <strong>{{failed.total}}</strong>.
+    Showing failed job <strong>{{start+1}}</strong> to <strong>{{limit}}</strong> of total <strong>{{total}}</strong>.
 </p>

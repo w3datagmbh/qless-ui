@@ -1,0 +1,64 @@
+<div class="page-header">
+    <p class="lead pull-right">
+        {{ completed.jobs.length }}
+        <small>Jobs</small>
+    </p>
+
+    <h1>Completed Jobs</h1>
+</div>
+
+<div ng-switch on="completed.jobs.length">
+    <div ng-switch-when="0">
+        Nothing to see here, move along.
+    </div>
+
+    <div ng-switch-default>
+        <nav ng-include="'partials/_pagination.html'"></nav>
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>job</th>
+                <th>tags</th>
+                <th>state</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="job in completed.jobs">
+                <td>
+                    <strong>{{job.klass_name}}</strong> <br>
+                    <a href="#/jobs/{{ job.jid }}">{{ job.jid }}</a>
+                </td>
+                <td>
+                    <div class="tag-list">
+                        <span data-ng-repeat="tag in job.tags" class="badge">
+                            {{ tag }}
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <em>{{job.state}}</em>
+                </td>
+                <td>
+                    <div class="btn-group pull-right" role="group">
+                        <button ng-click="on_toggle_track(job)" type="button" class="btn btn-xs {{job.tracked ? 'btn-info' : 'btn-default'}}">
+                            <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                        </button>
+
+                        <button ng-click="on_retry(job.jid)" type="button" class="btn btn-xs btn-success">
+                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                        </button>
+
+                        <button ng-click="on_cancel(job.jid)" type="button" class="btn btn-xs btn-danger">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav ng-include="'partials/_pagination.html'"></nav>
+    </div>
+</div>
