@@ -3,4 +3,7 @@ on <strong>{{job.failure.worker}}</strong>
 <em>{{moment.unix(job.failure.when).format()}}</em>
 ({{moment.unix(job.failure.when).fromNow()}})
 
-<pre>{{ job.failure.message }}</pre>
+<button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#job-{{ job.jid }}_failure_msg" aria-expanded="false" aria-controls="job-{{ job.jid }}_failure_msg">
+  Details
+</button>
+<pre class="collapse" id="job-{{ job.jid }}_failure_msg">{{ job.failure.message }}</pre>

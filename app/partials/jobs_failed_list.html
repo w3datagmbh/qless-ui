@@ -1,26 +1,10 @@
-<h1>
-    {{ group }}
-
-    <small class="pull-right-h1 black">
+<div class="page-header">
+    <p class="lead pull-right">
         {{ failed.total }}
         <small>Jobs</small>
-    </small>
-</h1>
+    </p>
 
-<div class="row">
-    <div class="btn-group pull-right" role="group">
-        <button ng-click="on_retry_all()" type="button" class="btn btn-sm btn-success">
-            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-            Retry All
-        </button>
-
-        <button ng-click="on_cancel_all()" type="button" class="btn btn-sm btn-danger">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            Cancel All
-        </button>
-    </div>
-
-    <nav ng-include="'partials/_pagination.html'"></nav>
+    <h1>{{ group }}</h1>
 </div>
 
 <div ng-switch on="failed.jobs.length">
@@ -28,51 +12,63 @@
         Nothing to see here, move along.
     </div>
 
-    <table ng-switch-default class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th>jid</th>
-            <th>error</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="job in failed.jobs">
-            <td>
-                <strong>{{job.klass_name}}</strong> <br>
-                <a href="#/jobs/{{ job.jid }}">{{ job.jid }}</a>
+    <div ng-switch-default>
+        <div class="btn-group pull-right" role="group">
+            <button ng-click="on_retry_all()" type="button" class="btn btn-sm btn-success">
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                Retry All
+            </button>
 
-                <div class="tag-list">
-                    <span data-ng-repeat="tag in job.tags" class="badge">
-                        {{ tag }}
-                    </span>
-                </div>
-            </td>
-            <td>
-                <div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'"></div>
-            </td>
-            <td>
-                <div class="btn-group pull-right" role="group">
-                    <button ng-click="on_toggle_track(job)" type="button" class="btn btn-xs {{job.tracked ? 'btn-info' : 'btn-default'}}">
-                        <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-                    </button>
+            <button ng-click="on_cancel_all()" type="button" class="btn btn-sm btn-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Cancel All
+            </button>
+        </div>
 
-                    <button ng-click="on_retry(job.jid)" type="button" class="btn btn-xs btn-success">
-                        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-                    </button>
+        <nav ng-include="'partials/_pagination.html'"></nav>
 
-                    <button ng-click="on_cancel(job.jid)" type="button" class="btn btn-xs btn-danger">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>jid</th>
+                <th>error</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="job in failed.jobs">
+                <td>
+                    <strong>{{job.klass_name}}</strong> <br>
+                    <a href="#/jobs/{{ job.jid }}">{{ job.jid }}</a>
+
+                    <div class="tag-list">
+                        <span data-ng-repeat="tag in job.tags" class="badge">
+                            {{ tag }}
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'"></div>
+                </td>
+                <td>
+                    <div class="btn-group pull-right" role="group">
+                        <button ng-click="on_toggle_track(job)" type="button" class="btn btn-xs {{job.tracked ? 'btn-info' : 'btn-default'}}">
+                            <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                        </button>
+
+                        <button ng-click="on_retry(job.jid)" type="button" class="btn btn-xs btn-success">
+                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                        </button>
+
+                        <button ng-click="on_cancel(job.jid)" type="button" class="btn btn-xs btn-danger">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav ng-include="'partials/_pagination.html'"></nav>
+    </div>
 </div>
-
-<nav ng-include="'partials/_pagination.html'"></nav>
-
-<pre>
-{{failed}}
-</pre>

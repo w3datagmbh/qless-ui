@@ -1,47 +1,45 @@
-<h1>
-    {{ job.klass_name }}
-    <small>
-        {{ job.jid }}
-    </small>
+<div class="page-header">
+    <h1>
+        {{ job.klass_name }}
+        <small>{{ job.jid }}</small>
 
-    <small class="pull-right-h1 black">
-        <small>state: </small>
-        {{ job.state }}
+        <small class="pull-right-h1 black">
+            <small>state: </small>
+            {{ job.state }}
 
-        <small>queue:</small>
-        <a href="#/queues/{{ job.queue_name }}">{{ job.queue_name }}</a>
-    </small>
-</h1>
+            <small>queue:</small>
+            <a href="#/queues/{{ job.queue_name }}">{{ job.queue_name }}</a>
+        </small>
+    </h1>
+</div>
 
-<div class="row">
-    <div class="btn-group pull-right" role="group">
-        <button ng-click="on_toggle_track()" type="button" class="btn btn-sm {{tracked ? 'btn-info' : 'btn-default'}}">
-            <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-            {{tracked ? 'Untrack' : 'Track'}}
-        </button>
+<div class="btn-group pull-right" role="group">
+    <button ng-click="on_toggle_track()" type="button" class="btn btn-sm {{tracked ? 'btn-info' : 'btn-default'}}">
+        <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+        {{tracked ? 'Untrack' : 'Track'}}
+    </button>
 
-        <button ng-click="on_retry()" type="button" class="btn btn-sm btn-success">
-            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-            Retry
-        </button>
+    <button ng-click="on_retry()" type="button" class="btn btn-sm btn-success">
+        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+        Retry
+    </button>
 
-        <button ng-click="on_cancel()" type="button" class="btn btn-sm btn-danger">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            Cancel
-        </button>
-    </div>
+    <button ng-click="on_cancel()" type="button" class="btn btn-sm btn-danger">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        Cancel
+    </button>
+</div>
 
-    <div class="tag-list" style="margin-left: 10px;">
-        <span data-ng-repeat="tag in tags" class="badge">
-            {{ tag }}
-            <span ng-click="on_remove_tag(tag)"  class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        </span>
+<div class="tag-list">
+    <span data-ng-repeat="tag in tags" class="badge">
+        {{ tag }}
+        <span ng-click="on_remove_tag(tag)"  class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </span>
 
-        <button ng-click="on_add_tag()" type="button" class="btn btn-xs btn-default">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            Add Tag
-        </button>
-    </div>
+    <button ng-click="on_add_tag()" type="button" class="btn btn-xs btn-default">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        Add Tag
+    </button>
 </div>
 
 <div class="row">

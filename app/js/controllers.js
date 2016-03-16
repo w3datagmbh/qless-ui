@@ -126,7 +126,11 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
 qlessuiControllers.controller('JobsFailedCtrl', ['$scope', 'Jobs',
   function($scope, Jobs) {
         $scope.on_refresh = function() {
-            $scope.failed = Jobs.failed({group: null});
+            Jobs.failed({group: null}, function(data){
+                $scope.failed = Object.keys(data).length > 2 ? data : null;
+            }, function(err) {
+                $scope.failed = null;
+            });
         };
 
         $scope.on_retry_all = function(group) {
