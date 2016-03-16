@@ -13,61 +13,65 @@
     </h1>
 </div>
 
-<div class="btn-group pull-right" role="group">
-    <button ng-click="on_toggle_track()" type="button" class="btn btn-sm {{tracked ? 'btn-info' : 'btn-default'}}">
-        <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-        {{tracked ? 'Untrack' : 'Track'}}
-    </button>
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-group pull-right" role="group">
+            <button ng-click="on_toggle_track()" type="button" class="btn btn-sm {{tracked ? 'btn-info' : 'btn-default'}}">
+                <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                {{tracked ? 'Untrack' : 'Track'}}
+            </button>
 
-    <button ng-click="on_retry()" type="button" class="btn btn-sm btn-success">
-        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-        Retry
-    </button>
+            <button ng-click="on_retry()" type="button" class="btn btn-sm btn-success">
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                Retry
+            </button>
 
-    <button ng-click="on_cancel()" type="button" class="btn btn-sm btn-danger">
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        Cancel
-    </button>
-</div>
+            <button ng-click="on_cancel()" type="button" class="btn btn-sm btn-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                Cancel
+            </button>
+        </div>
 
-<form class="form-inline pull-right" style="margin-right: 10px;">
-    <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-addon">Prio</div>
-            <input class="form-control input-sm" placeholder="0" ng-model="priority" style="width: 50px;">
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                </button>
+        <form class="form-inline pull-right" style="margin-right: 10px;">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">Prio</div>
+                    <input class="form-control input-sm" placeholder="0" ng-model="priority" style="width: 50px;">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
 
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a ng-click="on_change_priority(priority)">set priority</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a ng-click="on_change_priority(25)">high (25)</a></li>
-                    <li><a ng-click="on_change_priority(0)">normal (0)</a></li>
-                    <li><a ng-click="on_change_priority(-25)">low (-25)</a></li>
-                </ul>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a ng-click="on_change_priority(priority)">set priority</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a ng-click="on_change_priority(25)">high (25)</a></li>
+                            <li><a ng-click="on_change_priority(0)">normal (0)</a></li>
+                            <li><a ng-click="on_change_priority(-25)">low (-25)</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+        </form>
+
+        <div class="tag-list">
+            <span data-ng-repeat="tag in tags" class="badge">
+                {{ tag }}
+                <span ng-click="on_remove_tag(tag)"  class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </span>
+
+            <button ng-click="on_add_tag()" type="button" class="btn btn-xs btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Add Tag
+            </button>
         </div>
     </div>
-</form>
-
-<div class="tag-list">
-    <span data-ng-repeat="tag in tags" class="badge">
-        {{ tag }}
-        <span ng-click="on_remove_tag(tag)"  class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-    </span>
-
-    <button ng-click="on_add_tag()" type="button" class="btn btn-xs btn-default">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        Add Tag
-    </button>
 </div>
 
 <div class="row">
     <div class="col-md-6">
         Data:
-        <pre>{{ job.data }}</pre>
+        <pre>{{ JSON.stringify(job.data, null, 2) }}</pre>
     </div>
 
     <div class="col-md-6">
@@ -94,6 +98,4 @@
 
 <div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'"></div>
 
-<pre>
-{{ JSON.stringify(job, null, 2) }}
-</pre>
+<pre>{{ JSON.stringify(job, null, 2) }}</pre>

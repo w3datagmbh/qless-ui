@@ -43,6 +43,7 @@ qlessuiServices.factory('Queues', ['$resource', 'ErrorHandler',
 qlessuiServices.factory('Jobs', ['$resource', 'ErrorHandler',
   function($resource, ErrorHandler){
     return $resource(qlessPyUi + '/jobs/:type/:group/:start/:limit/:jid/:action', { jid: null, type: null, group: null, start: null, limit: null, action: null }, {
+        tracked: { method:'GET', params: { type: 'tracked' }, interceptor : {responseError : ErrorHandler.error} },
         failed: { method:'GET', params: { type: 'failed' }, interceptor : {responseError : ErrorHandler.error} },
         completed: { method:'GET', params: { type: 'completed' }, interceptor : {responseError : ErrorHandler.error} },
         retry: { method:'GET', params: { action: 'retry' }, interceptor : {responseError : ErrorHandler.error} },

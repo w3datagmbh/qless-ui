@@ -135,6 +135,32 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
   }
 ]);
 
+qlessuiControllers.controller('JobsTrackedListCtrl', ['$scope', '$routeParams', 'Jobs',
+  function($scope, $routeParams, Jobs) {
+        $scope.tracked = Jobs.tracked();
+        $scope.moment = moment;
+
+        $scope.on_toggle_track = function(job) {
+            if(job.tracked) {
+                Jobs.untrack({jid: job.jid});
+            }
+            else {
+                Jobs.track({jid: job.jid});
+            }
+
+            job.tracked = !job.tracked;
+        };
+        $scope.on_retry = function(jid) {
+            Jobs.retry({jid: jid});
+            load();
+        };
+        $scope.on_cancel = function(jid) {
+            Jobs.cancel({jid: jid});
+            load();
+        };
+  }
+]);
+
 qlessuiControllers.controller('JobsFailedCtrl', ['$scope', 'Jobs',
   function($scope, Jobs) {
         $scope.on_refresh = function() {

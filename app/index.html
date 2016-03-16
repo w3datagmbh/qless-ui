@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Qless UI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/angular-bootstrap-nav-tree/dist/abn_tree.css">
     <link rel="stylesheet" href="css/app.css">
 
@@ -35,6 +35,7 @@
           <ul class="nav navbar-nav">
             <li ng-class="{ active: isActive('/')}"><a href="#/">Dashboard</a></li>
             <li ng-class="{ active: isActive('/queues')}"><a href="#/queues">Queues</a></li>
+            <li ng-class="{ active: isActive('/jobs/tracked')}"><a href="#/jobs/tracked">Tracked</a></li>
             <li ng-class="{ active: isActive('/jobs/failed')}"><a href="#/jobs/failed">Failed</a></li>
           </ul>
         </div>
