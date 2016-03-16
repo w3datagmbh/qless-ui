@@ -30,6 +30,28 @@
     </button>
 </div>
 
+<form class="form-inline pull-right" style="margin-right: 10px;">
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-addon">Prio</div>
+            <input class="form-control input-sm" placeholder="0" ng-model="priority" style="width: 50px;">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a ng-click="on_change_priority(priority)">set priority</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-click="on_change_priority(25)">high (25)</a></li>
+                    <li><a ng-click="on_change_priority(0)">normal (0)</a></li>
+                    <li><a ng-click="on_change_priority(-25)">low (-25)</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>
+
 <div class="tag-list">
     <span data-ng-repeat="tag in tags" class="badge">
         {{ tag }}
@@ -73,5 +95,5 @@
 <div class="alert alert-danger" role="alert" ng-include="'partials/_job_failure.html'"></div>
 
 <pre>
-{{job}}
+{{ JSON.stringify(job, null, 2) }}
 </pre>

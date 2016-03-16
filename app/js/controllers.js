@@ -75,13 +75,25 @@ qlessuiControllers.controller('QueuesGetCtrl', ['$scope', '$routeParams', 'Queue
 qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
   function($scope, $location, $routeParams, Jobs) {
         $scope.tags = [];
+        $scope.priority = '-';
         $scope.tracked = false;
         $scope.moment = moment;
+        $scope.JSON = JSON;
 
         $scope.job = Jobs.get({jid: $routeParams.jid}, function(data){
             $scope.tags = data.tags;
+            $scope.priority = data.priority;
             $scope.tracked = data.tracked;
         });
+
+        $scope.on_change_priority = function(new_priority) {
+            Jobs.priority({jid: $routeParams.jid}, new_priority, function(data){
+                $scope.priority = new_priority;
+                $scope.job.priority = new_priority;
+            }, function(err){
+                $scope.priority = $scope.job.priority;
+            });
+        }
 
         $scope.on_retry = function() {
             Jobs.retry({jid: $routeParams.jid});
