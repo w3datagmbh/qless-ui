@@ -20,6 +20,14 @@ qlessuiApp.config(['$routeProvider',
         templateUrl: 'partials/queues_get.html',
         controller: 'QueuesGetCtrl'
       }).
+      when('/workers', {
+        templateUrl: 'partials/workers.html',
+        controller: 'WorkersListCtrl'
+      }).
+      when('/workers/:workerName', {
+        templateUrl: 'partials/workers_get.html',
+        controller: 'WorkersGetCtrl'
+      }).
       when('/jobs/tracked', {
         templateUrl: 'partials/jobs_tracked.html',
         controller: 'JobsTrackedListCtrl'

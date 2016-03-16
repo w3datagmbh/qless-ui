@@ -40,6 +40,14 @@ qlessuiServices.factory('Queues', ['$resource', 'ErrorHandler',
     });
   }]);
 
+qlessuiServices.factory('Workers', ['$resource', 'ErrorHandler',
+  function($resource, ErrorHandler){
+    return $resource(qlessPyUi + '/workers/:workerName', { workerName: null }, {
+        query: { method:'GET', isArray:true, interceptor : {responseError : ErrorHandler.error} },
+        get: { method:'GET', params: { workerName: null }, interceptor : {responseError : ErrorHandler.error} },
+    });
+  }]);
+
 qlessuiServices.factory('Jobs', ['$resource', 'ErrorHandler',
   function($resource, ErrorHandler){
     return $resource(qlessPyUi + '/jobs/:type/:group/:start/:limit/:jid/:action', { jid: null, type: null, group: null, start: null, limit: null, action: null }, {

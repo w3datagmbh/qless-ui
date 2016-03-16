@@ -72,6 +72,39 @@ qlessuiControllers.controller('QueuesGetCtrl', ['$scope', '$routeParams', 'Queue
 ]);
 
 
+qlessuiControllers.controller('WorkersListCtrl', ['$scope', 'Workers',
+    function($scope, Workers) {
+        $scope.workers = Workers.query();
+    }
+]);
+
+qlessuiControllers.controller('WorkersGetCtrl', ['$scope', '$routeParams', 'Workers', 'Jobs',
+    function($scope, $routeParams, Workers, Jobs) {
+        $scope.workerName = $routeParams.workerName;
+        $scope.worker = Workers.get({workerName: $routeParams.workerName});
+
+        $scope.on_toggle_track = function(job) {
+            if(job.tracked) {
+                Jobs.untrack({jid: job.jid});
+            }
+            else {
+                Jobs.track({jid: job.jid});
+            }
+
+            job.tracked = !job.tracked;
+        };
+        $scope.on_retry = function(jid) {
+            Jobs.retry({jid: jid});
+            load();
+        };
+        $scope.on_cancel = function(jid) {
+            Jobs.cancel({jid: jid});
+            load();
+        };
+    }
+]);
+
+
 qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
   function($scope, $location, $routeParams, Jobs) {
         $scope.tags = [];

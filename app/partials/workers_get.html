@@ -1,0 +1,23 @@
+<div class="page-header">
+    <h1>
+        {{ workerName }}
+
+        <small class="black">
+            <small>running:</small>
+            {{ worker.jobs.length }}
+
+            <small>stalled:</small>
+            {{ worker.stalled.length }}
+        </small>
+    </h1>
+</div>
+
+<h2>Jobs <small>running</small></h2>
+<div ng-include="'partials/_jobs.html'" ng-repeat="jobs in [worker.jobs]"></div>
+
+<h2>Jobs <small>stalled</small></h2>
+<div ng-include="'partials/_jobs.html'" ng-repeat="jobs in [worker.stalled]"></div>
+
+<pre>
+{{worker}}
+</pre>
