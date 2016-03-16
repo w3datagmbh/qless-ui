@@ -13,10 +13,10 @@
 </div>
 
 <h2>Jobs <small>running</small></h2>
-<div ng-include="'partials/_jobs.html'" ng-repeat="jobs in [worker.jobs]"></div>
+<ng-include src="'partials/_jobs.html'" ng-repeat="jobs in [worker.jobs]"></ng-include>
 
 <h2>Jobs <small>stalled</small></h2>
-<div ng-include="'partials/_jobs.html'" ng-repeat="jobs in [worker.stalled]"></div>
+<ng-include src="'partials/_jobs.html'" ng-repeat="jobs in [worker.stalled]"></ng-include>
 
 <pre>
 {{worker}}
