@@ -12,6 +12,10 @@ var qlessuiApp = angular.module('qlessUi', [
 qlessuiApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
+      when('/', {
+        templateUrl: 'partials/dashboard.html',
+        //controller: 'QueuesListCtrl'
+      }).
       when('/queues', {
         templateUrl: 'partials/queues.html',
         controller: 'QueuesListCtrl'
@@ -47,8 +51,5 @@ qlessuiApp.config(['$routeProvider',
       when('/jobs/:jid', {
         templateUrl: 'partials/jobs_get.html',
         controller: 'JobsGetCtrl'
-      }).
-      otherwise({
-        redirectTo: '/queues'
       });
   }]);
