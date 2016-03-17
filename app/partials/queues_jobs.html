@@ -1,0 +1,11 @@
+<div ng-switch on="jobs.length">
+    <div ng-switch-when="0">
+        Nothing to see here, move along.
+    </div>
+
+    <div ng-switch-default>
+        <ng-include src="'partials/_pagination.html'"></ng-include>
+        <ng-include src="'partials/_jobs.html'"></ng-include>
+        <ng-include src="'partials/_pagination.html'"></ng-include>
+    </div>
+</div>

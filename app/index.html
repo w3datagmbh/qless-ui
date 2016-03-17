@@ -49,6 +49,7 @@
             <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts">
                 <button ng-click="closeAlert($index)" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 {{alert.msg}}
+                <pre ng-show="alert.description" style="margin-top: 15px;">{{alert.description}}</pre>
             </div>
         </div>
 

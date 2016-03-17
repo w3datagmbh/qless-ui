@@ -35,6 +35,22 @@
     </h1>
 </div>
 
+<h2>Jobs</h2>
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li ng-repeat="state in states" role="presentation" class="{{state == selected_state ? 'active' : ''}}">
+            <a ng-click="on_select_state(state)" role="tab">{{state}}</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div ng-repeat="state in states" role="tabpanel" class="tab-pane {{state == selected_state ? 'active' : ''}}" id="jobs-{{state}}">
+            <ng-include ng-controller="QueuesJobsCtrl" src="'partials/queues_jobs.html'"></ng-include>
+        </div>
+    </div>
+</div>
+
+<hr/>
 <pre>
 {{queue}}
 

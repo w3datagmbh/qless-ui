@@ -30,7 +30,11 @@ qlessuiControllers.controller('AlertCtrl', ['$scope', '$rootScope',
             $scope.alerts.push({type: 'danger', msg: args});
         });
         $rootScope.$on('api_error' , function(event, args) {
-            $scope.alerts.push({type: 'danger', msg: 'API request failed: ' + args.status + ' ' + args.statusText});
+            $scope.alerts.push({
+                type: 'danger',
+                msg: 'API request failed: ' + args.status + ' ' + args.statusText,
+                description: args.data
+            });
         });
 
         $scope.closeAlert = function(index) {
@@ -68,7 +72,81 @@ qlessuiControllers.controller('QueuesGetCtrl', ['$scope', '$routeParams', 'Queue
   function($scope, $routeParams, Queues) {
         $scope.queue = Queues.get({queueName: $routeParams.queueName});
         $scope.stats = Queues.stats({queueName: $routeParams.queueName});
+        $scope.states = ['running', 'waiting', 'scheduled', 'stalled', 'depends', 'recurring'];
+        $scope.selected_state = 'running';
+
+        $scope.on_select_state = function(state){
+            $scope.selected_state = state;
+        }
   }
+]);
+
+qlessuiControllers.controller('QueuesJobsCtrl', ['$scope', '$routeParams', 'Queues', 'Jobs',
+    function($scope, $routeParams, Queues, Jobs) {
+        var step = 25;
+        $scope.failed = null;
+        $scope.start = 0;
+        $scope.limit = step;
+        $scope.total = 0;
+        $scope.moment = moment;
+
+        function load() {
+            Queues.jobs({queueName: $routeParams.queueName, state: $scope.state, start: $scope.start, limit: $scope.limit},
+                function(data){
+                    $scope.jobs = data.jobs;
+                    $scope.total = data.total;
+                    $scope.limit = Math.min(data.total, $scope.limit);
+
+                    $scope.pages = [];
+                    for(var i = 0; i < data.total; i += step) {
+                        $scope.pages.push(i);
+                    }
+                });
+        }
+        load();
+
+        $scope.on_previous = function() {
+            if($scope.start == 0)
+                return;
+
+            $scope.start = Math.max(0, $scope.start - step);
+            $scope.limit = Math.max(step, $scope.start + step);
+            load();
+        }
+        $scope.on_next = function() {
+            if($scope.limit >= $scope.total)
+                return;
+
+            $scope.start = Math.max(0, Math.min($scope.total - 1, $scope.start + step));
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            load();
+        }
+        $scope.on_select_page = function(page) {
+            console.log(page);
+            $scope.start = page;
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            load();
+        }
+
+        $scope.on_toggle_track = function(job) {
+            if(job.tracked) {
+                Jobs.untrack({jid: job.jid});
+            }
+            else {
+                Jobs.track({jid: job.jid});
+            }
+
+            job.tracked = !job.tracked;
+        };
+        $scope.on_retry = function(jid) {
+            Jobs.retry({jid: jid});
+            load();
+        };
+        $scope.on_cancel = function(jid) {
+            Jobs.cancel({jid: jid});
+            load();
+        };
+    }
 ]);
 
 
@@ -132,8 +210,9 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             Jobs.retry({jid: $routeParams.jid});
         };
         $scope.on_cancel = function() {
-            Jobs.cancel({jid: $routeParams.jid});
-            $location.path('/');
+            Jobs.cancel({jid: $routeParams.jid}, function(data){
+                $location.path('/');
+            });
         };
 
         function update_tags(data) {
@@ -286,13 +365,15 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
         };
 
         $scope.on_retry_all = function() {
-            Jobs.retry_all({group: $routeParams.group});
-            $location.path('/jobs/failed');
+            Jobs.retry_all({group: $routeParams.group}, function(data){
+                $location.path('/jobs/failed');
+            });
         };
         $scope.on_cancel_all = function() {
             if (confirm("Cancel all jobs in '" + $routeParams.group + "'?")) {
-                Jobs.cancel_all({group: $routeParams.group});
-                $location.path('/jobs/failed');
+                Jobs.cancel_all({group: $routeParams.group}, function(data){
+                    $location.path('/jobs/failed');
+                });
             }
         };
   }

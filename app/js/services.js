@@ -31,12 +31,13 @@ qlessuiServices.factory('Groups', ['$resource', 'ErrorHandler',
 
 qlessuiServices.factory('Queues', ['$resource', 'ErrorHandler',
   function($resource, ErrorHandler){
-    return $resource(qlessPyUi + '/queues/:queueName/:action', { queueName: null, action: null }, {
+    return $resource(qlessPyUi + '/queues/:queueName/:action/:state/:start/:limit', { queueName: null, action: null }, {
         query: { method:'GET', isArray:true, interceptor : {responseError : ErrorHandler.error} },
         get: { method:'GET', params: { queueName: null }, interceptor : {responseError : ErrorHandler.error} },
         stats: { method:'GET', params: { queueName: null, action: 'stats' }, interceptor : {responseError : ErrorHandler.error} },
         pause: { method:'GET', params: { queueName: null, action: 'pause' }, interceptor : {responseError : ErrorHandler.error} },
-        unpause: { method:'GET', params: { queueName: null, action: 'unpause' }, interceptor : {responseError : ErrorHandler.error} }
+        unpause: { method:'GET', params: { queueName: null, action: 'unpause' }, interceptor : {responseError : ErrorHandler.error} },
+        jobs: { method:'GET', params: { queueName: null }, interceptor : {responseError : ErrorHandler.error} },
     });
   }]);
 
