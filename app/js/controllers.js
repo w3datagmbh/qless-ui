@@ -183,8 +183,8 @@ qlessuiControllers.controller('WorkersGetCtrl', ['$scope', '$routeParams', 'Work
 ]);
 
 
-qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', 'Jobs',
-  function($scope, $location, $routeParams, Jobs) {
+qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', '$sce', 'Jobs',
+  function($scope, $location, $routeParams, $sce, Jobs) {
         $scope.tags = [];
         $scope.priority = '-';
         $scope.tracked = false;
@@ -196,6 +196,7 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             $scope.priority = data.priority;
             $scope.tracked = data.tracked;
         });
+        $scope.trees = Jobs.trees({jid: $routeParams.jid});
 
         $scope.on_change_priority = function(new_priority) {
             Jobs.priority({jid: $routeParams.jid}, new_priority, function(data){

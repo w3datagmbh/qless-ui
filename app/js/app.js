@@ -53,3 +53,5 @@ qlessuiApp.config(['$routeProvider',
         controller: 'JobsGetCtrl'
       });
   }]);
+
+qlessuiApp.filter('unsafe', function($sce) { return $sce.trustAsHtml; });

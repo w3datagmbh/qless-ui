@@ -96,6 +96,21 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-6">
+        <h3>Dependencies</h3>
+        <ng-include src="'partials/_jobs.html'" ng-repeat="jobs in [job.dependencies]"></ng-include>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Dependents</h3>
+        <ng-include src="'partials/_jobs.html'" ng-repeat="jobs in [job.dependents]"></ng-include>
+    </div>
+</div>
+
+<h3>Dependency Trees</h3>
+<pre ng-repeat="tree in trees" ng-bind-html="tree | unsafe"></pre>
+
 <ng-include src="'partials/_job_failure.html'"></ng-include>
 
 <hr/>
