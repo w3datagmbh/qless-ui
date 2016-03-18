@@ -186,17 +186,28 @@ qlessuiControllers.controller('WorkersGetCtrl', ['$scope', '$routeParams', 'Work
 qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', '$sce', 'Jobs',
   function($scope, $location, $routeParams, $sce, Jobs) {
         $scope.tags = [];
+        $scope.trees = [];
         $scope.priority = '-';
         $scope.tracked = false;
         $scope.moment = moment;
         $scope.JSON = JSON;
+        var regexJobMD5 = new RegExp('([0-9A-F]{32})', 'g');
+        var regexMD5 = new RegExp('([0-9a-f]{32})', 'g');
 
         $scope.job = Jobs.get({jid: $routeParams.jid}, function(data){
             $scope.tags = data.tags;
             $scope.priority = data.priority;
             $scope.tracked = data.tracked;
         });
-        $scope.trees = Jobs.trees({jid: $routeParams.jid});
+        Jobs.trees({jid: $routeParams.jid}, function(data){
+            for(var i = 0; i < data.length; i++) {
+                var tree = data[i];
+                tree = tree.replace(regexJobMD5, '<a href="#/jobs/$1"><strong>$1</strong></a>');
+                tree = tree.replace(regexMD5, '<a href="#/jobs/$1">$1</a>');
+                $scope.trees.push(tree);
+            }
+
+        });
 
         $scope.on_change_priority = function(new_priority) {
             Jobs.priority({jid: $routeParams.jid}, new_priority, function(data){

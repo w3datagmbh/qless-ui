@@ -108,8 +108,10 @@
     </div>
 </div>
 
-<h3>Dependency Trees</h3>
-<pre ng-repeat="tree in trees" ng-bind-html="tree | unsafe"></pre>
+<div ng-show="trees.length > 0">
+    <h3>Dependency Trees</h3>
+    <pre ng-repeat="tree in trees" ng-bind-html="tree | unsafe"></pre>
+</div>
 
 <ng-include src="'partials/_job_failure.html'"></ng-include>
 
