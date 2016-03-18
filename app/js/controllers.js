@@ -202,8 +202,8 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
                     var jid = $scope.cancel_tree[j];
                     tree = tree.replace(new RegExp('(' + jid + ')', 'g'), '<span class="bg-danger">$1</span>');
                 }
-                tree = tree.replace(regexMD5, '<a href="#/jobs/$1">$1</a>');
                 tree = tree.replace(regexJobMD5, '<strong>$1</strong>');
+                tree = tree.replace(regexMD5, '<a href="#/jobs/$1">$1</a>');
                 $scope.trees[i] = tree;
             }
         }
