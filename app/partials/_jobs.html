@@ -37,11 +37,11 @@
                             <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
                         </button>
 
-                        <button ng-click="on_retry(job.jid)" type="button" class="btn btn-xs btn-success">
+                        <button ng-click="on_retry(job)" type="button" class="btn btn-xs btn-success">
                             <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
                         </button>
 
-                        <button ng-click="on_cancel(job.jid)" type="button" class="btn btn-xs btn-danger">
+                        <button ng-click="on_cancel(job)" type="button" class="btn btn-xs btn-danger {{job.dependents.length > 0 ? 'disabled' : ''}}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
                     </div>

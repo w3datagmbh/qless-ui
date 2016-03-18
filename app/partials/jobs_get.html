@@ -26,7 +26,7 @@
                 Retry
             </button>
 
-            <button ng-click="on_cancel()" type="button" class="btn btn-sm btn-danger">
+            <button ng-click="on_cancel()" type="button" class="btn btn-sm btn-danger {{cancel_tree.length > 0 ? '' : 'disabled'}}">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 Cancel
             </button>
@@ -111,6 +111,12 @@
 <div ng-show="trees.length > 0">
     <h3>Dependency Trees</h3>
     <pre ng-repeat="tree in trees" ng-bind-html="tree | unsafe"></pre>
+    <div>
+        <strong>Active (current selected job)</strong>
+        <span style="color: blue;">Node (can't be canceled)</span>
+        <span style="color: red;">Leave (can be canceled)</span>
+        <span class="bg-danger">Cancel Tree (will be affected by cancel)</span>
+    </div>
 </div>
 
 <ng-include src="'partials/_job_failure.html'"></ng-include>

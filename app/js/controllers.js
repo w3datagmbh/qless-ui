@@ -187,26 +187,39 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
   function($scope, $location, $routeParams, $sce, Jobs) {
         $scope.tags = [];
         $scope.trees = [];
+        $scope.cancel_tree = [];
         $scope.priority = '-';
         $scope.tracked = false;
         $scope.moment = moment;
         $scope.JSON = JSON;
-        var regexJobMD5 = new RegExp('([0-9A-F]{32})', 'g');
         var regexMD5 = new RegExp('([0-9a-f]{32})', 'g');
 
+        function update_tree() {
+            var regexJobMD5 = new RegExp('(' + $scope.job.jid + ')', 'g');
+            for(var i = 0; i < $scope.trees.length; i++) {
+                var tree = $scope.trees[i];
+                for(var j = 0; j < $scope.cancel_tree.length; j++) {
+                    var jid = $scope.cancel_tree[j];
+                    tree = tree.replace(new RegExp('(' + jid + ')', 'g'), '<span class="bg-danger">$1</span>');
+                }
+                tree = tree.replace(regexMD5, '<a href="#/jobs/$1">$1</a>');
+                tree = tree.replace(regexJobMD5, '<strong>$1</strong>');
+                $scope.trees[i] = tree;
+            }
+        }
         $scope.job = Jobs.get({jid: $routeParams.jid}, function(data){
             $scope.tags = data.tags;
             $scope.priority = data.priority;
             $scope.tracked = data.tracked;
-        });
-        Jobs.trees({jid: $routeParams.jid}, function(data){
-            for(var i = 0; i < data.length; i++) {
-                var tree = data[i];
-                tree = tree.replace(regexJobMD5, '<a href="#/jobs/$1"><strong>$1</strong></a>');
-                tree = tree.replace(regexMD5, '<a href="#/jobs/$1">$1</a>');
-                $scope.trees.push(tree);
-            }
 
+            Jobs.trees({jid: $routeParams.jid}, function(data){
+                $scope.trees = data;
+
+                Jobs.cancel_tree({jid: $routeParams.jid}, function(data){
+                    $scope.cancel_tree = data;
+                    update_tree();
+                });
+            });
         });
 
         $scope.on_change_priority = function(new_priority) {
@@ -222,6 +235,10 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             Jobs.retry({jid: $routeParams.jid});
         };
         $scope.on_cancel = function() {
+            if($scope.job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
             Jobs.cancel({jid: $routeParams.jid}, function(data){
                 $location.path('/');
             });
@@ -274,12 +291,16 @@ qlessuiControllers.controller('JobsTrackedListCtrl', ['$scope', '$routeParams', 
 
             job.tracked = !job.tracked;
         };
-        $scope.on_retry = function(jid) {
-            Jobs.retry({jid: jid});
+        $scope.on_retry = function(job) {
+            Jobs.retry({jid: job.jid});
             load();
         };
-        $scope.on_cancel = function(jid) {
-            Jobs.cancel({jid: jid});
+        $scope.on_cancel = function(job) {
+            if(job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
+            Jobs.cancel({jid: job.jid});
             load();
         };
   }
@@ -367,12 +388,16 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
 
             job.tracked = !job.tracked;
         };
-        $scope.on_retry = function(jid) {
-            Jobs.retry({jid: jid});
+        $scope.on_retry = function(job) {
+            Jobs.retry({jid: job.jid});
             load();
         };
-        $scope.on_cancel = function(jid) {
-            Jobs.cancel({jid: jid});
+        $scope.on_cancel = function(job) {
+            if(job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
+            Jobs.cancel({jid: job.jid});
             load();
         };
 
@@ -447,12 +472,16 @@ qlessuiControllers.controller('JobsCompletedListCtrl', ['$scope', '$routeParams'
 
             job.tracked = !job.tracked;
         };
-        $scope.on_retry = function(jid) {
-            Jobs.retry({jid: jid});
+        $scope.on_retry = function(job) {
+            Jobs.retry({jid: job.jid});
             load();
         };
-        $scope.on_cancel = function(jid) {
-            Jobs.cancel({jid: jid});
+        $scope.on_cancel = function(job) {
+            if(job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
+            Jobs.cancel({jid: job.jid});
             load();
         };
   }
