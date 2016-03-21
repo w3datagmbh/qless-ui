@@ -187,7 +187,7 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
   function($scope, $location, $routeParams, $sce, Jobs) {
         $scope.tags = [];
         $scope.trees = [];
-        $scope.cancel_tree = [];
+        $scope.cancel_subtree = [];
         $scope.priority = '-';
         $scope.tracked = false;
         $scope.moment = moment;
@@ -198,8 +198,8 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             var regexJobMD5 = new RegExp('(' + $scope.job.jid + ')', 'g');
             for(var i = 0; i < $scope.trees.length; i++) {
                 var tree = $scope.trees[i];
-                for(var j = 0; j < $scope.cancel_tree.length; j++) {
-                    var jid = $scope.cancel_tree[j];
+                for(var j = 0; j < $scope.cancel_subtree.length; j++) {
+                    var jid = $scope.cancel_subtree[j];
                     tree = tree.replace(new RegExp('(' + jid + ')', 'g'), '<span class="bg-danger">$1</span>');
                 }
                 tree = tree.replace(regexJobMD5, '<strong>$1</strong>');
@@ -215,8 +215,8 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             Jobs.trees({jid: $routeParams.jid}, function(data){
                 $scope.trees = data;
 
-                Jobs.cancel_tree({jid: $routeParams.jid}, function(data){
-                    $scope.cancel_tree = data;
+                Jobs.cancel_subtree({jid: $routeParams.jid}, function(data){
+                    $scope.cancel_subtree = data;
                     update_tree();
                 });
             });
@@ -242,6 +242,17 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             Jobs.cancel({jid: $routeParams.jid}, function(data){
                 $location.path('/');
             });
+        };
+        $scope.on_cancel_subtree = function() {
+            if($scope.job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
+            if (confirm('Cancel all jobs who are leading only to his leave?\n\nJobs:\n* ' + $scope.cancel_subtree.join('\n* ') + '?')) {
+                Jobs.cancel_list({}, $scope.cancel_subtree, function(data){
+                    $location.path('/');
+                });
+            }
         };
 
         function update_tags(data) {
