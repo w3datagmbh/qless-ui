@@ -43,10 +43,10 @@
                     <a href="#/queues/{{ queue.name }}">{{ queue.name }}</a>
 
                     <span ng-switch on="queue.paused">
-                        <button ng-switch-when="true" ng-click="on_queue_play(queue.name)" class="btn btn-default btn-xs">
+                        <button ng-switch-when="true" ng-click="on_queue_play(queue.name)" class="btn btn-default btn-xs" title="Unpause">
                             <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
                         </button>
-                        <button ng-switch-default ng-click="on_queue_pause(queue.name)" class="btn btn-default btn-xs">
+                        <button ng-switch-default ng-click="on_queue_pause(queue.name)" class="btn btn-default btn-xs" title="Pause">
                             <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
                         </button>
                     </span>

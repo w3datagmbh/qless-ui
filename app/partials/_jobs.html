@@ -32,16 +32,22 @@
                     <ng-include src="'partials/_job_failure.html'"></ng-include>
                 </td>
                 <td>
+                    <div class="btn-group pull-right" style="margin-left: 7px;" role="group">
+                        <button ng-click="on_undepend(job)" type="button" class="btn btn-xs btn-default" title="Undepend">
+                            <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
                     <div class="btn-group pull-right" role="group">
-                        <button ng-click="on_toggle_track(job)" type="button" class="btn btn-xs {{job.tracked ? 'btn-info' : 'btn-default'}}">
+                        <button ng-click="on_toggle_track(job)" type="button" class="btn btn-xs {{job.tracked ? 'btn-info' : 'btn-default'}}" title="Track/Untrack">
                             <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
                         </button>
 
-                        <button ng-click="on_retry(job)" type="button" class="btn btn-xs btn-success">
+                        <button ng-click="on_retry(job)" type="button" class="btn btn-xs btn-success" title="Retry">
                             <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
                         </button>
 
-                        <button ng-click="on_cancel(job)" type="button" class="btn btn-xs btn-danger {{job.dependents.length > 0 ? 'disabled' : ''}}">
+                        <button ng-click="on_cancel(job)" type="button" class="btn btn-xs btn-danger {{job.dependents.length > 0 ? 'disabled' : ''}}" title="Cancel">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
                     </div>

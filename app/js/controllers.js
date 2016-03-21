@@ -248,7 +248,7 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
                 return alert('This job has dependents, unable to cancel.');
             }
 
-            if (confirm('Cancel all jobs who are leading only to his leave?\n\nJobs:\n* ' + $scope.cancel_subtree.join('\n* ') + '?')) {
+            if (confirm('Cancel all jobs who are leading only to his leave?\n\nJobs:\n* ' + $scope.cancel_subtree.join('\n* '))) {
                 Jobs.cancel_list({}, $scope.cancel_subtree, function(data){
                     $location.path('/');
                 });

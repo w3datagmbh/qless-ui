@@ -26,49 +26,7 @@
         </div>
 
         <ng-include src="'partials/_pagination.html'"></ng-include>
-
-        <table class="table table-striped table-hover">
-            <thead>
-            <tr>
-                <th>job</th>
-                <th>error</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="job in failed.jobs">
-                <td>
-                    <strong>{{job.klass_name}}</strong> <br>
-                    <a href="#/jobs/{{ job.jid }}">{{ job.jid }}</a>
-
-                    <div class="tag-list">
-                        <span data-ng-repeat="tag in job.tags" class="badge">
-                            {{ tag }}
-                        </span>
-                    </div>
-                </td>
-                <td>
-                    <ng-include src="'partials/_job_failure.html'"></ng-include>
-                </td>
-                <td>
-                    <div class="btn-group pull-right" role="group">
-                        <button ng-click="on_toggle_track(job)" type="button" class="btn btn-xs {{job.tracked ? 'btn-info' : 'btn-default'}}">
-                            <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-                        </button>
-
-                        <button ng-click="on_retry(job)" type="button" class="btn btn-xs btn-success">
-                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-                        </button>
-
-                        <button ng-click="on_cancel(job)" type="button" class="btn btn-xs btn-danger {{job.dependents.length > 0 ? 'disabled' : ''}}">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
+        <ng-include src="'partials/_jobs.html'" ng-repeat="jobs in [failed.jobs]"></ng-include>
         <ng-include src="'partials/_pagination.html'"></ng-include>
     </div>
 </div>
