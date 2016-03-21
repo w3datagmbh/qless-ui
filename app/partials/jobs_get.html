@@ -107,6 +107,18 @@
     <div class="col-md-6">
         <h3>Dependencies</h3>
         <ng-include src="'partials/_jobs.html'" ng-repeat="jobs in [job.dependencies]"></ng-include>
+
+        <div class="btn-group" role="group">
+            <button ng-click="on_add_dependency()" type="button" class="btn btn-sm btn-default {{job.state != 'depends' ? 'disabled' : ''}}">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                Add Dependency
+            </button>
+
+            <button ng-click="on_undepend_all()" type="button" class="btn btn-sm btn-default" ng-show="job.dependencies.length > 0">
+                <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                Undepend All
+            </button>
+        </div>
     </div>
 
     <div class="col-md-6">

@@ -67,6 +67,8 @@ qlessuiServices.factory('Jobs', ['$resource', 'ErrorHandler',
         tag: { method:'POST', isArray:true, params: { action: 'tag' }, interceptor : {responseError : ErrorHandler.error} },
         untag: { method:'POST', isArray:true, params: { action: 'untag' }, interceptor : {responseError : ErrorHandler.error} },
         track: { method:'GET', params: { action: 'track' }, interceptor : {responseError : ErrorHandler.error} },
-        untrack: { method:'GET', params: { action: 'untrack' }, interceptor : {responseError : ErrorHandler.error} }
+        untrack: { method:'GET', params: { action: 'untrack' }, interceptor : {responseError : ErrorHandler.error} },
+        depend: { method:'POST', params: { action: 'depend' }, interceptor : {responseError : ErrorHandler.error} },
+        undepend: { method:'POST', params: { action: 'undepend' }, interceptor : {responseError : ErrorHandler.error} }
     });
   }]);

@@ -32,7 +32,7 @@
                     <ng-include src="'partials/_job_failure.html'"></ng-include>
                 </td>
                 <td>
-                    <div class="btn-group pull-right" style="margin-left: 7px;" role="group">
+                    <div class="btn-group pull-right" style="margin-left: 7px;" role="group" ng-show="on_undepend">
                         <button ng-click="on_undepend(job)" type="button" class="btn btn-xs btn-default" title="Undepend">
                             <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
                         </button>

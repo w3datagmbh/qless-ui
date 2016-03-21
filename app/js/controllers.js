@@ -207,20 +207,23 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
                 $scope.trees[i] = tree;
             }
         }
-        $scope.job = Jobs.get({jid: $routeParams.jid}, function(data){
-            $scope.tags = data.tags;
-            $scope.priority = data.priority;
-            $scope.tracked = data.tracked;
+        function load_job() {
+            $scope.job = Jobs.get({jid: $routeParams.jid}, function(data){
+                $scope.tags = data.tags;
+                $scope.priority = data.priority;
+                $scope.tracked = data.tracked;
 
-            Jobs.trees({jid: $routeParams.jid}, function(data){
-                $scope.trees = data;
+                Jobs.trees({jid: $routeParams.jid}, function(data){
+                    $scope.trees = data;
 
-                Jobs.cancel_subtree({jid: $routeParams.jid}, function(data){
-                    $scope.cancel_subtree = data;
-                    update_tree();
+                    Jobs.cancel_subtree({jid: $routeParams.jid}, function(data){
+                        $scope.cancel_subtree = data;
+                        update_tree();
+                    });
                 });
             });
-        });
+        }
+        load_job();
 
         $scope.on_change_priority = function(new_priority) {
             Jobs.priority({jid: $routeParams.jid}, new_priority, function(data){
@@ -282,6 +285,36 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
             }
             else {
                 Jobs.track({jid: $routeParams.jid}, toggle_track);
+            }
+        }
+
+        $scope.on_add_dependency = function() {
+            if($scope.job.state != 'depends'){
+                return alert('This job is not in \'depends\' state, unable to add dependencies.');
+            }
+
+            var jid = prompt("Please enter JID to depend on:");
+            if(jid) {
+                Jobs.depend({jid: $routeParams.jid}, [jid]);
+                load_job();
+            }
+        }
+
+        $scope.on_undepend = function(job) {
+            // is dependency
+            if(job.dependents.indexOf($routeParams.jid) != -1) {
+                Jobs.undepend({jid: $routeParams.jid}, [job.jid]);
+            }
+            // is dependent
+            else {
+                Jobs.undepend({jid: job.jid}, [$routeParams.jid]);
+            }
+            load_job();
+        }
+        $scope.on_undepend_all = function(job) {
+            if (confirm("Remove all dependencies?")) {
+                Jobs.undepend({jid: $routeParams.jid}, []);
+                load_job();
             }
         }
   }
