@@ -183,13 +183,14 @@ qlessuiControllers.controller('WorkersGetCtrl', ['$scope', '$routeParams', 'Work
 ]);
 
 
-qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', '$sce', 'Jobs',
-  function($scope, $location, $routeParams, $sce, Jobs) {
+qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routeParams', '$sce', 'Jobs', 'Queues',
+  function($scope, $location, $routeParams, $sce, Jobs, Queues) {
         $scope.tags = [];
         $scope.trees = [];
         $scope.cancel_subtree = [];
         $scope.priority = '-';
         $scope.tracked = false;
+        $scope.queues = Queues.query();
         $scope.moment = moment;
         $scope.JSON = JSON;
         var regexMD5 = new RegExp('([0-9a-f]{32})', 'g');
@@ -233,9 +234,15 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
                 $scope.priority = $scope.job.priority;
             });
         }
+        $scope.on_move_queue = function(new_queue) {
+            Jobs.move({jid: $routeParams.jid}, new_queue, function(data){
+                load_job();
+            });
+        }
 
         $scope.on_retry = function() {
             Jobs.retry({jid: $routeParams.jid});
+            load_job();
         };
         $scope.on_cancel = function() {
             if($scope.job.dependents.length > 0){

@@ -39,11 +39,30 @@
             </button>
         </div>
 
-        <form class="form-inline pull-right" style="margin-right: 10px;">
+        <form class="form-inline pull-right" style="margin-right: 7px;">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">Queue</div>
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li ng-repeat="queue in queues">
+                                <a ng-click="on_move_queue(queue.name)">{{ queue.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form class="form-inline pull-right" style="margin-right: 7px;">
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">Prio</div>
-                    <input class="form-control input-sm" placeholder="0" ng-model="priority" style="width: 50px;">
+                    <input class="form-control input-sm" placeholder="0" ng-model="priority" style="width: 50px;" />
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
@@ -137,6 +156,8 @@
         <span class="bg-danger">Cancel Subtree (will be affected by 'Cancel Subtree')</span>
     </div>
 </div>
+
+<hr/>
 
 <ng-include src="'partials/_job_failure.html'"></ng-include>
 
