@@ -14,13 +14,6 @@ qlessuiServices.factory("ErrorHandler", function($rootScope){
     };
 });
 
-qlessuiServices.factory('Config', ['$resource', 'ErrorHandler',
-  function($resource, ErrorHandler){
-    return $resource(qlessPyUi + '/config', {}, {
-      get: { method:'GET', interceptor : {responseError : ErrorHandler.error} }
-    });
-  }]);
-
 qlessuiServices.factory('Groups', ['$resource', 'ErrorHandler',
   function($resource, ErrorHandler){
     return $resource(qlessPyUi + '/groups/:regexStr', { regexStr: null }, {
