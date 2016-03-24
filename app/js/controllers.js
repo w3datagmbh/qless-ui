@@ -138,12 +138,16 @@ qlessuiControllers.controller('QueuesJobsCtrl', ['$scope', '$routeParams', 'Queu
 
             job.tracked = !job.tracked;
         };
-        $scope.on_retry = function(jid) {
-            Jobs.retry({jid: jid});
+        $scope.on_retry = function(job) {
+            Jobs.retry({jid: job.jid});
             load();
         };
-        $scope.on_cancel = function(jid) {
-            Jobs.cancel({jid: jid});
+        $scope.on_cancel = function(job) {
+            if(job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
+            Jobs.cancel({jid: job.jid});
             load();
         };
     }
@@ -159,7 +163,11 @@ qlessuiControllers.controller('WorkersListCtrl', ['$scope', 'Workers',
 qlessuiControllers.controller('WorkersGetCtrl', ['$scope', '$routeParams', 'Workers', 'Jobs',
     function($scope, $routeParams, Workers, Jobs) {
         $scope.workerName = $routeParams.workerName;
-        $scope.worker = Workers.get({workerName: $routeParams.workerName});
+
+        function load() {
+            $scope.worker = Workers.get({workerName: $routeParams.workerName});
+        }
+        load();
 
         $scope.on_toggle_track = function(job) {
             if(job.tracked) {
@@ -171,12 +179,16 @@ qlessuiControllers.controller('WorkersGetCtrl', ['$scope', '$routeParams', 'Work
 
             job.tracked = !job.tracked;
         };
-        $scope.on_retry = function(jid) {
-            Jobs.retry({jid: jid});
+        $scope.on_retry = function(job) {
+            Jobs.retry({jid: job.jid});
             load();
         };
-        $scope.on_cancel = function(jid) {
-            Jobs.cancel({jid: jid});
+        $scope.on_cancel = function(job) {
+            if(job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
+            Jobs.cancel({jid: job.jid});
             load();
         };
     }
@@ -329,8 +341,12 @@ qlessuiControllers.controller('JobsGetCtrl', ['$scope', '$location', '$routePara
 
 qlessuiControllers.controller('JobsTrackedListCtrl', ['$scope', '$routeParams', 'Jobs',
   function($scope, $routeParams, Jobs) {
-        $scope.tracked = Jobs.tracked();
         $scope.moment = moment;
+
+        function load() {
+            $scope.tracked = Jobs.tracked();
+        }
+        load();
 
         $scope.on_toggle_track = function(job) {
             if(job.tracked) {
