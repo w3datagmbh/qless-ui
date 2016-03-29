@@ -16,9 +16,9 @@ qlessuiServices.factory("ErrorHandler", function($rootScope){
 
 qlessuiServices.factory('Groups', ['$resource', 'ErrorHandler',
   function($resource, ErrorHandler){
-    return $resource(qlessPyUi + '/groups/:regexStr', { regexStr: null }, {
-        nav: { method:'GET', isArray:true, interceptor : {responseError : ErrorHandler.error} },
-        get: { method:'GET', isArray:true, params: { regexStr: '.*' }, interceptor : {responseError : ErrorHandler.error} }
+    return $resource(qlessPyUi + '/groups/:action/:regexStr', { action: null, regexStr: null }, {
+        nav_tree: { method:'GET', isArray:true, params: { action: 'nav_tree' }, interceptor : {responseError : ErrorHandler.error} },
+        get: { method:'GET', isArray:true, params: { action: 'queues' }, interceptor : {responseError : ErrorHandler.error} },
     });
   }]);
 

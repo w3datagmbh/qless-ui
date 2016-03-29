@@ -45,7 +45,7 @@ qlessuiControllers.controller('AlertCtrl', ['$scope', '$rootScope',
 
 qlessuiControllers.controller('QueuesListCtrl', ['$scope', 'Groups', 'Queues',
   function($scope, Groups, Queues) {
-    $scope.groups = Groups.nav();
+    $scope.groups = Groups.nav_tree();
     $scope.queues = Queues.query();
     $scope.groups_tree = {};
     var regexStr = '.*';
