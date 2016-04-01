@@ -51,12 +51,12 @@
                         </button>
                     </span>
                 </td>
-                <td>{{ queue.running }}</td>
-                <td>{{ queue.waiting }}</td>
-                <td>{{ queue.scheduled }}</td>
-                <td>{{ queue.stalled }}</td>
-                <td>{{ queue.depends }}</td>
-                <td>{{ queue.recurring }}</td>
+                <td class="{{queue.running > 0 ? '' : 'text-muted'}}">{{ queue.running }}</td>
+                <td class="{{queue.waiting > 0 ? '' : 'text-muted'}}">{{ queue.waiting }}</td>
+                <td class="{{queue.scheduled > 0 ? '' : 'text-muted'}}">{{ queue.scheduled }}</td>
+                <td class="{{queue.stalled > 0 ? '' : 'text-muted'}}">{{ queue.stalled }}</td>
+                <td class="{{queue.depends > 0 ? '' : 'text-muted'}}">{{ queue.depends }}</td>
+                <td class="{{queue.recurring > 0 ? '' : 'text-muted'}}">{{ queue.recurring }}</td>
             </tr>
             </tbody>
         </table>
