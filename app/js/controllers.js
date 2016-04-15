@@ -553,3 +553,81 @@ qlessuiControllers.controller('JobsCompletedListCtrl', ['$scope', '$routeParams'
         };
   }
 ]);
+
+qlessuiControllers.controller('TagsListCtrl', ['$scope', 'Tags',
+    function($scope, Tags) {
+        $scope.tags = Tags.query();
+    }
+]);
+
+qlessuiControllers.controller('TagsGetCtrl', ['$scope', '$routeParams', 'Tags', 'Jobs',
+    function($scope, $routeParams, Tags, Jobs) {
+        $scope.tagName = $routeParams.tagName;
+        var step = 25;
+        $scope.start = 0;
+        $scope.limit = step;
+        $scope.total = 0;
+        $scope.moment = moment;
+
+        function load() {
+            Tags.get({tagName: $routeParams.tagName, state: $scope.state, start: $scope.start, limit: $scope.limit},
+                function(data){
+                    $scope.jobs = data.jobs;
+                    $scope.total = data.total;
+                    $scope.limit = Math.min(data.total, $scope.limit);
+
+                    $scope.pages = [];
+                    for(var i = 0; i < data.total; i += step) {
+                        $scope.pages.push(i);
+                    }
+                });
+        }
+        load();
+
+        $scope.on_previous = function() {
+            if($scope.start == 0)
+                return;
+
+            $scope.start = Math.max(0, $scope.start - step);
+            $scope.limit = Math.max(step, $scope.start + step);
+            load();
+        }
+        $scope.on_next = function() {
+            if($scope.limit >= $scope.total)
+                return;
+
+            $scope.start = Math.max(0, Math.min($scope.total - 1, $scope.start + step));
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            load();
+        }
+        $scope.on_select_page = function(page) {
+            console.log(page);
+            $scope.start = page;
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            load();
+        }
+
+        $scope.on_toggle_track = function(job) {
+            if(job.tracked) {
+                Jobs.untrack({jid: job.jid});
+            }
+            else {
+                Jobs.track({jid: job.jid});
+            }
+
+            job.tracked = !job.tracked;
+        };
+        $scope.on_retry = function(job) {
+            Jobs.retry({jid: job.jid});
+            load();
+        };
+        $scope.on_cancel = function(job) {
+            if(job.dependents.length > 0){
+                return alert('This job has dependents, unable to cancel.');
+            }
+
+            Jobs.cancel({jid: job.jid});
+            load();
+        };
+    }
+]);

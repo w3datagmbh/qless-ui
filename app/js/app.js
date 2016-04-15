@@ -51,6 +51,14 @@ qlessuiApp.config(['$routeProvider',
       when('/jobs/:jid', {
         templateUrl: 'partials/jobs_get.html',
         controller: 'JobsGetCtrl'
+      }).
+      when('/tags', {
+        templateUrl: 'partials/tags.html',
+        controller: 'TagsListCtrl'
+      }).
+      when('/tags/:tagName', {
+        templateUrl: 'partials/tags_get.html',
+        controller: 'TagsGetCtrl'
       });
   }]);
 

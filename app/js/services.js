@@ -66,3 +66,11 @@ qlessuiServices.factory('Jobs', ['$resource', 'ErrorHandler',
         undepend: { method:'POST', params: { action: 'undepend' }, interceptor : {responseError : ErrorHandler.error} }
     });
   }]);
+
+qlessuiServices.factory('Tags', ['$resource', 'ErrorHandler',
+  function($resource, ErrorHandler){
+    return $resource(qlessPyUi + '/tags/:tagName/:start/:limit', { tagName: null, start: null, limit: null }, {
+        query: { method:'GET', isArray:true, interceptor : {responseError : ErrorHandler.error} },
+        get: { method:'GET', params: { tagName: null }, interceptor : {responseError : ErrorHandler.error} },
+    });
+  }]);

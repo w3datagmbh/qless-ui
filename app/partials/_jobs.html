@@ -25,8 +25,9 @@
                     </div>
                 </td>
                 <td>
-                    <em>{{job.state}}</em> <br>
-                    {{job.queue_name ? 'in' : ''}} <strong>{{job.queue_name}}</strong>
+                    <em>{{job.state}}</em>
+                    <span ng-show="job.queue_name"><br>in <strong>{{job.queue_name}}</strong></span>
+                    <span ng-show="moment"><br><strong>{{job.history[job.history.length - 1].what}}</strong> <i>{{moment.unix(job.history[job.history.length - 1].when).fromNow()}}</i></span>
                 </td>
                 <td>
                     <ng-include src="'partials/_job_failure.html'"></ng-include>

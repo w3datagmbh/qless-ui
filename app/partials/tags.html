@@ -1,0 +1,13 @@
+<div class="page-header">
+    <h1>Tags</h1>
+</div>
+
+<div ng-switch on="tags.length">
+    <div ng-switch-when="0">
+        Nothing to see here, move along.
+    </div>
+
+    <div ng-switch-default class="tag-list">
+        <a ng-repeat="tag in tags" href="#/tags/{{tag}}"><span class="badge">{{ tag }}</span></a>
+    </div>
+</div>
