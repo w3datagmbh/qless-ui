@@ -122,7 +122,6 @@ qlessuiControllers.controller('QueuesJobsCtrl', ['$scope', '$routeParams', 'Queu
             load();
         }
         $scope.on_select_page = function(page) {
-            console.log(page);
             $scope.start = page;
             $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
@@ -439,7 +438,6 @@ qlessuiControllers.controller('JobsFailedListCtrl', ['$scope', '$location', '$ro
             load();
         }
         $scope.on_select_page = function(page) {
-            console.log(page);
             $scope.start = page;
             $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
@@ -493,10 +491,11 @@ qlessuiControllers.controller('JobsCompletedListCtrl', ['$scope', '$routeParams'
         $scope.moment = moment;
 
         function load() {
-            $scope.completed = Jobs.completed({start: $scope.start, limit: $scope.limit},
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            $scope.completed = Jobs.completed({start: $scope.start, limit: step},
                 function(data){
                     $scope.total = data.total;
-                    $scope.limit = Math.min(data.total, $scope.limit);
+                    $scope.limit = Math.min(data.total, $scope.start + step);
 
                     $scope.pages = [];
                     for(var i = 0; i < data.total; i += step) {
@@ -511,7 +510,6 @@ qlessuiControllers.controller('JobsCompletedListCtrl', ['$scope', '$routeParams'
                 return;
 
             $scope.start = Math.max(0, $scope.start - step);
-            $scope.limit = Math.max(step, $scope.start + step);
             load();
         }
         $scope.on_next = function() {
@@ -519,13 +517,10 @@ qlessuiControllers.controller('JobsCompletedListCtrl', ['$scope', '$routeParams'
                 return;
 
             $scope.start = Math.max(0, Math.min($scope.total - 1, $scope.start + step));
-            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
         }
         $scope.on_select_page = function(page) {
-            console.log(page);
             $scope.start = page;
-            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
         }
 
@@ -570,11 +565,12 @@ qlessuiControllers.controller('TagsGetCtrl', ['$scope', '$routeParams', 'Tags', 
         $scope.moment = moment;
 
         function load() {
-            Tags.get({tagName: $routeParams.tagName, state: $scope.state, start: $scope.start, limit: $scope.limit},
+            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
+            Tags.get({tagName: $routeParams.tagName, state: $scope.state, start: $scope.start, limit: step},
                 function(data){
                     $scope.jobs = data.jobs;
                     $scope.total = data.total;
-                    $scope.limit = Math.min(data.total, $scope.limit);
+                    $scope.limit = Math.min(data.total, $scope.start + step);
 
                     $scope.pages = [];
                     for(var i = 0; i < data.total; i += step) {
@@ -589,7 +585,6 @@ qlessuiControllers.controller('TagsGetCtrl', ['$scope', '$routeParams', 'Tags', 
                 return;
 
             $scope.start = Math.max(0, $scope.start - step);
-            $scope.limit = Math.max(step, $scope.start + step);
             load();
         }
         $scope.on_next = function() {
@@ -597,13 +592,10 @@ qlessuiControllers.controller('TagsGetCtrl', ['$scope', '$routeParams', 'Tags', 
                 return;
 
             $scope.start = Math.max(0, Math.min($scope.total - 1, $scope.start + step));
-            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
         }
         $scope.on_select_page = function(page) {
-            console.log(page);
             $scope.start = page;
-            $scope.limit = Math.max(0, Math.min($scope.total, $scope.start + step));
             load();
         }
 
