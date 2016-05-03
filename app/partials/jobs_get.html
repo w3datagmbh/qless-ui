@@ -97,13 +97,13 @@
 <div class="row">
     <div class="col-md-6">
         Data:
-        <pre>{{ JSON.stringify(job.data, null, 2) }}</pre>
+        <pre style="max-height: 500px; overflow: scroll;">{{ JSON.stringify(job.data, null, 2) }}</pre>
     </div>
 
     <div class="col-md-6">
         History:
 
-        <div class="well well-sm" style="max-height: 250px; overflow: scroll;">
+        <div class="well well-sm" style="max-height: 500px; overflow: scroll;">
             <p ng-repeat="entry in job.history">
                 <strong>{{ entry.what }}</strong>
 
@@ -146,14 +146,31 @@
     </div>
 </div>
 
-<div ng-show="trees.length > 0">
+<div>
     <h3>Dependency Trees</h3>
-    <pre ng-repeat="tree in trees" ng-bind-html="tree | unsafe"></pre>
-    <div>
-        <strong>Active (current selected job)</strong>
-        <span style="color: blue;">Node (can't be canceled)</span>
-        <span style="color: red;">Leave (can be canceled)</span>
-        <span class="bg-danger">Cancel Subtree (will be affected by 'Cancel Subtree')</span>
+    <div class="panel-group">
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a ng-click="toggle_trees()">
+                    <span class="glyphicon glyphicon-triangle-{{show_trees ? 'bottom' : 'right'}}" aria-hidden="true"></span>
+                    Dependency Trees
+                </a>
+            </h4>
+        </div>
+        <div class="panel-body" ng-show="show_trees && trees == null">
+            loading...
+        </div>
+        <div class="panel-body" ng-show="show_trees && trees != null">
+            <pre ng-repeat="tree in trees" ng-bind-html="tree | unsafe"></pre>
+            <div>
+                <strong>Active (current selected job)</strong>
+                <span style="color: blue;">Node (can't be canceled)</span>
+                <span style="color: red;">Leave (can be canceled)</span>
+                <span class="bg-danger">Cancel Subtree (will be affected by 'Cancel Subtree')</span>
+            </div>
+        </div>
+      </div>
     </div>
 </div>
 
@@ -163,4 +180,4 @@
 
 <hr/>
 
-<pre>{{ JSON.stringify(job, null, 2) }}</pre>
+<pre style="max-height: 500px; overflow: scroll;">{{ JSON.stringify(job, null, 2) }}</pre>
